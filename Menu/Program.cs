@@ -8,15 +8,19 @@ namespace Menu
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
-        static void Main()
+        public static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MenuForm());
+            MenuForm menuForm = new MenuForm();
+            Application.Run(menuForm);
+
+            string First = menuForm.FirstPlayerName;
+            string second = menuForm.SecondPlayerName;
+            bool HaveSecondPlayer = menuForm.IsPlayerAgainstFriend;
+            int size = menuForm.SizeOfBoard;
+
         }
     }
 }

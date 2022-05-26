@@ -47,7 +47,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(21, 29);
+            this.label1.Location = new System.Drawing.Point(21, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 29);
             this.label1.TabIndex = 0;
@@ -60,14 +60,14 @@
             this.radioButtonSmallSize.Checked = true;
             this.radioButtonSmallSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonSmallSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonSmallSize.Location = new System.Drawing.Point(39, 61);
+            this.radioButtonSmallSize.Location = new System.Drawing.Point(39, 79);
             this.radioButtonSmallSize.Name = "radioButtonSmallSize";
             this.radioButtonSmallSize.Size = new System.Drawing.Size(75, 29);
             this.radioButtonSmallSize.TabIndex = 1;
             this.radioButtonSmallSize.TabStop = true;
             this.radioButtonSmallSize.Text = "6 x 6";
             this.radioButtonSmallSize.UseVisualStyleBackColor = false;
-            this.radioButtonSmallSize.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButtonSmallSize.CheckedChanged += new System.EventHandler(this.radioButtonSmallSize_CheckedChanged);
             // 
             // radioButtonMediumSize
             // 
@@ -75,7 +75,7 @@
             this.radioButtonMediumSize.BackColor = System.Drawing.Color.Transparent;
             this.radioButtonMediumSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonMediumSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonMediumSize.Location = new System.Drawing.Point(153, 61);
+            this.radioButtonMediumSize.Location = new System.Drawing.Point(153, 79);
             this.radioButtonMediumSize.Name = "radioButtonMediumSize";
             this.radioButtonMediumSize.Size = new System.Drawing.Size(75, 29);
             this.radioButtonMediumSize.TabIndex = 2;
@@ -89,12 +89,13 @@
             this.radioButtonLargeSize.BackColor = System.Drawing.Color.Transparent;
             this.radioButtonLargeSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonLargeSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonLargeSize.Location = new System.Drawing.Point(266, 61);
+            this.radioButtonLargeSize.Location = new System.Drawing.Point(266, 79);
             this.radioButtonLargeSize.Name = "radioButtonLargeSize";
             this.radioButtonLargeSize.Size = new System.Drawing.Size(97, 29);
             this.radioButtonLargeSize.TabIndex = 3;
             this.radioButtonLargeSize.Text = "10 x 10";
             this.radioButtonLargeSize.UseVisualStyleBackColor = false;
+            this.radioButtonLargeSize.CheckedChanged += new System.EventHandler(this.radioButtonLargeSize_CheckedChanged);
             // 
             // label2
             // 
@@ -102,7 +103,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(21, 93);
+            this.label2.Location = new System.Drawing.Point(21, 111);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 29);
             this.label2.TabIndex = 4;
@@ -114,7 +115,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(43, 138);
+            this.label3.Location = new System.Drawing.Point(43, 156);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 25);
             this.label3.TabIndex = 5;
@@ -123,7 +124,7 @@
             // textBoxPlayer1Name
             // 
             this.textBoxPlayer1Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.textBoxPlayer1Name.Location = new System.Drawing.Point(180, 138);
+            this.textBoxPlayer1Name.Location = new System.Drawing.Point(180, 156);
             this.textBoxPlayer1Name.Name = "textBoxPlayer1Name";
             this.textBoxPlayer1Name.Size = new System.Drawing.Size(183, 30);
             this.textBoxPlayer1Name.TabIndex = 6;
@@ -135,7 +136,7 @@
             this.checkBoxIsPlayingAgainstFriend.BackColor = System.Drawing.Color.Black;
             this.checkBoxIsPlayingAgainstFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.checkBoxIsPlayingAgainstFriend.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.checkBoxIsPlayingAgainstFriend.Location = new System.Drawing.Point(48, 190);
+            this.checkBoxIsPlayingAgainstFriend.Location = new System.Drawing.Point(48, 208);
             this.checkBoxIsPlayingAgainstFriend.Name = "checkBoxIsPlayingAgainstFriend";
             this.checkBoxIsPlayingAgainstFriend.Size = new System.Drawing.Size(18, 17);
             this.checkBoxIsPlayingAgainstFriend.TabIndex = 7;
@@ -148,7 +149,7 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(72, 186);
+            this.label4.Location = new System.Drawing.Point(72, 204);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(89, 25);
             this.label4.TabIndex = 8;
@@ -158,7 +159,7 @@
             // 
             this.textBoxPlayer2Name.Enabled = false;
             this.textBoxPlayer2Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.textBoxPlayer2Name.Location = new System.Drawing.Point(180, 183);
+            this.textBoxPlayer2Name.Location = new System.Drawing.Point(180, 201);
             this.textBoxPlayer2Name.Name = "textBoxPlayer2Name";
             this.textBoxPlayer2Name.Size = new System.Drawing.Size(183, 30);
             this.textBoxPlayer2Name.TabIndex = 9;
@@ -170,7 +171,7 @@
             this.buttonDoneConfiguration.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.buttonDoneConfiguration.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonDoneConfiguration.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.buttonDoneConfiguration.Location = new System.Drawing.Point(205, 232);
+            this.buttonDoneConfiguration.Location = new System.Drawing.Point(205, 250);
             this.buttonDoneConfiguration.Name = "buttonDoneConfiguration";
             this.buttonDoneConfiguration.Size = new System.Drawing.Size(158, 38);
             this.buttonDoneConfiguration.TabIndex = 10;
@@ -187,7 +188,7 @@
             this.BackColor = System.Drawing.SystemColors.Menu;
             this.BackgroundImage = global::Menu.Properties.Resources.checkersBackground2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(404, 309);
+            this.ClientSize = new System.Drawing.Size(408, 333);
             this.Controls.Add(this.buttonDoneConfiguration);
             this.Controls.Add(this.textBoxPlayer2Name);
             this.Controls.Add(this.label4);
