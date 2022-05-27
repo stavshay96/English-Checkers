@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using Menu.Properties;
 
 namespace Ui
 {
@@ -37,55 +38,99 @@ namespace Ui
                 {
                     m_ButtonsGameBoard[i,j] = new Button();
                     m_ButtonsGameBoard[i, j].Size = new System.Drawing.Size(70, 70);
-                    if ((i+j)%2 != 0)
-                    {
-                        this.m_ButtonsGameBoard[i, j].BackColor = System.Drawing.Color.White;
-                        this.m_ButtonsGameBoard[i, j].Enabled = true;
 
-                    }
-                    else
-                    {
-                        this.m_ButtonsGameBoard[i, j].BackColor = System.Drawing.Color.Gray;
-                        this.m_ButtonsGameBoard[i, j].Enabled = false;
-                    }
-                    if (i + j == 0)
-                    {
-                        this.m_ButtonsGameBoard[i, j].Location = new System.Drawing.Point(20, 60);
-                    }
-                    else
-                    {
-                        if (j == 0)
-                        {
-                            this.m_ButtonsGameBoard[i, j].Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, j].Left, this.m_ButtonsGameBoard[i - 1, j].Bottom);
-                        }
-                        else if (i == 0)
-                        {
-                            this.m_ButtonsGameBoard[i, j].Location = new System.Drawing.Point(this.m_ButtonsGameBoard[i, j - 1].Right, this.m_ButtonsGameBoard[i, j - 1].Top);
-                        }
-                        else
-                        {
-                            this.m_ButtonsGameBoard[i, j].Location = new System.Drawing.Point(this.m_ButtonsGameBoard[i-1, j].Left, this.m_ButtonsGameBoard[i , j-1].Top);
-                        }
+                    enableButtonAndDraw(this.m_ButtonsGameBoard[i, j], i,j);
 
-                    }
+                    locateButtonOnForm(this.m_ButtonsGameBoard[i, j], i, j);
+
+                    putSymbolOnButton(i, j);
 
                     this.Controls.Add(this.m_ButtonsGameBoard[i, j]);
                 }
             }
 
+            this.m_LabelFirstPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelFirstPlayerScore.AutoSize = true;
             this.m_LabelFirstPlayerScore.BackColor = System.Drawing.Color.LightBlue;
-            this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(20, 21);
+            this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0,1].Left, 21);
 
+            this.m_LabelSecondPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelSecondPlayerScore.AutoSize = true;
             this.m_LabelSecondPlayerScore.BackColor = System.Drawing.Color.Orange;
-            this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(100, 21);
+            this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0,3].Left, 21);
             
 
             this.Controls.Add(this.m_LabelFirstPlayerScore);
             this.Controls.Add(this.m_LabelSecondPlayerScore);
             this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard-1, m_MenuForm.SizeOfBoard-1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "English Checkers";
+            this.BackgroundImage = global::Menu.Properties.Resources.checkersBackground21;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Tile;
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.Fixed3D;
+            //this.Icon = ((System.Drawing.Icon)(global::Menu.Properties.Resources.checkersLogo);
+
+        }
+
+        private void enableButtonAndDraw(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
+        {
+            if ((i_IndexRow + i_IndexColoum) % 2 != 0)
+            {
+                i_CurrentButton.BackColor = System.Drawing.Color.White;
+                i_CurrentButton.Enabled = true;
+
+            }
+            else
+            {
+                i_CurrentButton.BackColor = System.Drawing.Color.Gray;
+                i_CurrentButton.Enabled = false;
+            }
+        }
+
+        private void locateButtonOnForm(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
+        {
+            if (i_IndexRow + i_IndexColoum == 0)
+            {
+                i_CurrentButton.Location = new System.Drawing.Point(20, 60);
+            }
+            else
+            {
+                if (i_IndexColoum == 0)
+                {
+                    i_CurrentButton.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, i_IndexColoum].Left, this.m_ButtonsGameBoard[i_IndexRow - 1, i_IndexColoum].Bottom);
+                }
+                else if (i_IndexRow == 0)
+                {
+                    i_CurrentButton.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum - 1].Right, this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum - 1].Top);
+                }
+                else
+                {
+                    i_CurrentButton.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[i_IndexRow - 1, i_IndexColoum].Left, this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum - 1].Top);
+                }
+
+            }
+        }
+
+        private void putSymbolOnButton(int i_IndexRow, int i_IndexColoum)
+        {
+            if ((i_IndexRow + i_IndexColoum) % 2 != 0)
+            {
+                if (i_IndexRow < m_MenuForm.SizeOfBoard / 2 - 1)
+                {
+                    // X
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Menu.Properties.Resources.x;
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                }
+
+                if (m_MenuForm.SizeOfBoard / 2 < i_IndexRow && i_IndexRow < m_MenuForm.SizeOfBoard)
+                {
+                    //O
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Menu.Properties.Resources.O;
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+                }
+            }
+
         }
     }
 }

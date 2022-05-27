@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.label1 = new System.Windows.Forms.Label();
             this.radioButtonSmallSize = new System.Windows.Forms.RadioButton();
             this.radioButtonMediumSize = new System.Windows.Forms.RadioButton();
@@ -47,7 +48,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label1.Location = new System.Drawing.Point(45, 30);
+            this.label1.Location = new System.Drawing.Point(41, 77);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 29);
             this.label1.TabIndex = 0;
@@ -60,7 +61,7 @@
             this.radioButtonSmallSize.Checked = true;
             this.radioButtonSmallSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonSmallSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonSmallSize.Location = new System.Drawing.Point(63, 62);
+            this.radioButtonSmallSize.Location = new System.Drawing.Point(59, 109);
             this.radioButtonSmallSize.Name = "radioButtonSmallSize";
             this.radioButtonSmallSize.Size = new System.Drawing.Size(75, 29);
             this.radioButtonSmallSize.TabIndex = 1;
@@ -75,7 +76,7 @@
             this.radioButtonMediumSize.BackColor = System.Drawing.Color.Transparent;
             this.radioButtonMediumSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonMediumSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonMediumSize.Location = new System.Drawing.Point(177, 62);
+            this.radioButtonMediumSize.Location = new System.Drawing.Point(173, 109);
             this.radioButtonMediumSize.Name = "radioButtonMediumSize";
             this.radioButtonMediumSize.Size = new System.Drawing.Size(75, 29);
             this.radioButtonMediumSize.TabIndex = 2;
@@ -89,7 +90,7 @@
             this.radioButtonLargeSize.BackColor = System.Drawing.Color.Transparent;
             this.radioButtonLargeSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.radioButtonLargeSize.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.radioButtonLargeSize.Location = new System.Drawing.Point(290, 62);
+            this.radioButtonLargeSize.Location = new System.Drawing.Point(286, 109);
             this.radioButtonLargeSize.Name = "radioButtonLargeSize";
             this.radioButtonLargeSize.Size = new System.Drawing.Size(97, 29);
             this.radioButtonLargeSize.TabIndex = 3;
@@ -186,7 +187,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Menu;
-            this.BackgroundImage = global::Ui.Properties.Resources.checkersBackground2;
+            this.BackgroundImage = global::Menu.Properties.Resources.checkersBackground21;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(489, 404);
             this.Controls.Add(this.buttonDoneConfiguration);
@@ -200,7 +201,9 @@
             this.Controls.Add(this.radioButtonMediumSize);
             this.Controls.Add(this.radioButtonSmallSize);
             this.Controls.Add(this.label1);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MenuForm";

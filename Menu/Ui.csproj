@@ -89,5 +89,17 @@
   <ItemGroup>
     <None Include="Properties\checkersBackground2.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkersBackground2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\O.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkersLogo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
