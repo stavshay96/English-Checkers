@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Menu.Properties {
+namespace Ui.Properties {
     using System;
     
     

@@ -8,67 +8,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Menu
+namespace Ui
 {
     public partial class MenuForm : Form
     {
-        private string firstPlayerName = "";
-        private string secondPlayerName = "";
-        private bool isPlayerAgainstFriend = false;
-        private int sizeOfBoard = 0;
+        private int sizeOfBoard = 6;
         public MenuForm()
         {
             InitializeComponent();
         }
 
-        public string FirstPlayerName
-        {
-            get
-            {
-                return firstPlayerName;
-            }
-            set
-            {
-                firstPlayerName = value;
-            }
-        }
-
-        public string SecondPlayerName
-        {
-            get
-            {
-                return secondPlayerName;
-            }
-            set
-            {
-                secondPlayerName = value;
-            }
-        }
-
-        public bool IsPlayerAgainstFriend
-        {
-            get
-            {
-                return isPlayerAgainstFriend;
-            }
-            set
-            {
-                isPlayerAgainstFriend = value;
-            }
-        }
-
         public int SizeOfBoard
-        { 
-            get
-            {
-                return sizeOfBoard;
-            }
-            set
-            {
-                sizeOfBoard = value;
-            }
-        }
+        { get { return sizeOfBoard; } set { sizeOfBoard = value; } }
 
+        public string TextBoxPlayer1Name
+        {
+            get { return this.textBoxPlayer1Name.Text; }
+        }
+        public string TextBoxPlayer2Name
+        {
+            get { return this.textBoxPlayer2Name.Text; }
+        }
 
         private void buttonDoneConfiguration_Click(object sender, EventArgs e)
         {
@@ -96,21 +56,13 @@ namespace Menu
         private void textBoxPlayer1Name_TextChanged(object sender, EventArgs e)
         {
             TextBox Name = sender as TextBox;
-            FirstPlayerName = Name.Text;
+            textBoxPlayer1Name.Text = Name.Text;
         }
 
         private void textBoxPlayer2Name_TextChanged(object sender, EventArgs e)
         {
             TextBox Name = sender as TextBox;
-            if(!IsPlayerAgainstFriend)
-            {
-                SecondPlayerName = "CPU";
-            }
-            else
-            {
-                SecondPlayerName = Name.Text;
-            }
-
+            textBoxPlayer2Name.Text = Name.Text;
         }
 
         private void checkBoxIsPlayingAgainstFriend_CheckedChanged(object sender, EventArgs e)
@@ -119,13 +71,11 @@ namespace Menu
             {
                 textBoxPlayer2Name.Enabled = true;
                 textBoxPlayer2Name.Text = "";
-                isPlayerAgainstFriend = true;
             }
             else
             {
                 textBoxPlayer2Name.Enabled = false;
                 textBoxPlayer2Name.Text = "CPU";
-                isPlayerAgainstFriend = false;
             }
         }
 

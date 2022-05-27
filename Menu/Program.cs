@@ -4,22 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Menu
+namespace Ui
 {
     internal static class Program
     {
-        [STAThread]
+        //[STAThread]
         public static void Main()
         {
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            MenuForm menuForm = new MenuForm();
-            Application.Run(menuForm);
-
-            string First = menuForm.FirstPlayerName;
-            string second = menuForm.SecondPlayerName;
-            bool HaveSecondPlayer = menuForm.IsPlayerAgainstFriend;
-            int size = menuForm.SizeOfBoard;
+            //Application.SetCompatibleTextRenderingDefault(false);
+            GameBoardForm gameBoardForm = new GameBoardForm();
+            gameBoardForm.ShowDialog();
+            ////Application.Run(menuForm);
 
         }
     }

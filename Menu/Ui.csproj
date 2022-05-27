@@ -46,11 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardGame.cs">
+    <Compile Include="GameBoardForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BoardGame.Designer.cs">
-      <DependentUpon>BoardGame.cs</DependentUpon>
     </Compile>
     <Compile Include="MenuForm.cs">
       <SubType>Form</SubType>
@@ -60,9 +57,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="BoardGame.resx">
-      <DependentUpon>BoardGame.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
     </EmbeddedResource>
