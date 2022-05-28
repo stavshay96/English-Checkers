@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-using Menu.Properties;
 using Logic;
 
 namespace Ui
@@ -20,6 +19,7 @@ namespace Ui
         private Position m_CellMoveFrom;
         private Position m_CellMoveTo;
         private bool m_IsFirstClick = true;
+        private bool m_IsFirstPlayerMove = true;
 
         public GameBoardForm()
         {
@@ -82,10 +82,11 @@ namespace Ui
             this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard-1, m_MenuForm.SizeOfBoard-1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "English Checkers";
-            this.BackgroundImage = global::Menu.Properties.Resources.checkersLogo;
+            this.BackgroundImage = global::Ui.Properties.Resources.checkersLogo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Tile;
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
+            //this.Icon = Properties.Resources
 
 
         }
@@ -136,13 +137,13 @@ namespace Ui
                 if (i_IndexRow < m_MenuForm.SizeOfBoard / 2 - 1)
                 {
                     // X
-                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Menu.Properties.Resources.x;
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.x;
                 }
 
                 if (m_MenuForm.SizeOfBoard / 2 < i_IndexRow && i_IndexRow < m_MenuForm.SizeOfBoard)
                 {
                     //O
-                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Menu.Properties.Resources.O_removebg_preview__1_;
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.O_removebg_preview__1_;
                 }
                 this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             }
@@ -151,24 +152,25 @@ namespace Ui
 
         private void buttonMButtonsGameBoard_Click(object sender, EventArgs e)
         {
-            Button currentButton = sender as Button;
+            Button clickedButton = sender as Button;
             // send to method and get the current position to the click button in  the matrix
+            Position clickedPosition = GetClickedPosition(clickedButton);
             if (m_IsFirstClick)// boolean
             {
-                if (m_Gameplay.IsOwnTheCell())// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
+                if (m_Gameplay.IsOwnTheCell(clickedPosition,m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
                 {
-                    if (currentButton.BackColor == Color.White)
+                    if (clickedButton.BackColor == Color.White)
                     {
-                        currentButton.BackColor = Color.LightBlue;
+                        clickedButton.BackColor = Color.LightBlue;
                     }
                     else
                     {
-                        currentButton.BackColor = Color.White;
+                        clickedButton.BackColor = Color.White;
                     }
 
                     foreach (Button button in this.m_ButtonsGameBoard)
                     {
-                        if (button.Enabled && button != currentButton)
+                        if (button.Enabled && button != clickedButton)
                         {
                             button.BackColor = Color.White;
                         }
@@ -184,7 +186,7 @@ namespace Ui
             }
             else
             {
-                if (isOwnTheCell())// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
+                if (m_Gameplay.IsOwnTheCell(clickedPosition, m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
                 {
                     foreach (Button button in this.m_ButtonsGameBoard)
                     {
@@ -202,6 +204,26 @@ namespace Ui
 
 
             
+        }
+
+        private Position GetClickedPosition(Button i_ClickedButton)
+        {
+            uint countPosition = 0;
+            foreach(Button button in this.m_ButtonsGameBoard)
+            {
+                if(button == i_ClickedButton)
+                {
+                    break;
+                }
+                else
+                {
+                    countPosition++;
+                }
+            }
+            Position clickedPosition = new Position();
+            clickedPosition.Row = (uint)(countPosition / m_MenuForm.SizeOfBoard);
+            clickedPosition.Column = (uint)(countPosition % m_MenuForm.SizeOfBoard);
+            return clickedPosition;
         }
     }
 }
