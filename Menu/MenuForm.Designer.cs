@@ -187,7 +187,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Menu;
-            this.BackgroundImage = global::Menu.Properties.Resources.checkersBackground21;
+            this.BackgroundImage = global::Menu.Properties.Resources.checkersBackground2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(489, 404);
             this.Controls.Add(this.buttonDoneConfiguration);

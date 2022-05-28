@@ -19,15 +19,30 @@ namespace Ui
         }
 
         public int SizeOfBoard
-        { get { return sizeOfBoard; } set { sizeOfBoard = value; } }
+        {
+            get
+            {
+                return sizeOfBoard;
+            }
+            set
+            {
+                sizeOfBoard = value;
+            }
+        }
 
         public string TextBoxPlayer1Name
         {
-            get { return this.textBoxPlayer1Name.Text; }
+            get
+            {
+                return this.textBoxPlayer1Name.Text;
+            }
         }
         public string TextBoxPlayer2Name
         {
-            get { return this.textBoxPlayer2Name.Text; }
+            get
+            {
+                return this.textBoxPlayer2Name.Text;
+            }
         }
 
         private void buttonDoneConfiguration_Click(object sender, EventArgs e)
