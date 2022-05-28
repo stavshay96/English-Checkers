@@ -103,9 +103,9 @@ namespace Menu.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap O {
+        internal static System.Drawing.Bitmap O_removebg_preview__1_ {
             get {
-                object obj = ResourceManager.GetObject("O", resourceCulture);
+                object obj = ResourceManager.GetObject("O-removebg-preview (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
