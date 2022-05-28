@@ -34,7 +34,11 @@ namespace Ui
             m_CellMoveTo = new Position();
 
             m_MenuForm = new MenuForm();
-            m_MenuForm.ShowDialog();
+
+            do
+            {
+                m_MenuForm.ShowDialog();
+            } while (m_MenuForm.DialogResult != DialogResult.OK);
 
             sizeOfBoard = m_MenuForm.SizeOfBoard / 2;
 
@@ -86,9 +90,9 @@ namespace Ui
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Tile;
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.Fixed3D;
-            //this.Icon = Properties.Resources
 
-
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
         }
 
         private void enableButtonAndDraw(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
@@ -177,6 +181,7 @@ namespace Ui
                     }
 
                     // set the CellMoveFrom with the currentPosition
+                    m_CellMoveFrom = clickedPosition;
                     m_IsFirstClick = !m_IsFirstClick;
                 }
                 else
