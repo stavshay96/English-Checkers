@@ -45,6 +45,14 @@ namespace Ui
             }
         }
 
+        public bool IsPlayingAgainstFriend
+        {
+            get
+            {
+                return this.checkBoxIsPlayingAgainstFriend.Checked;
+            }
+        }
+
         private void buttonDoneConfiguration_Click(object sender, EventArgs e)
         {
             if(arePlayersNamesNotEmpty())
