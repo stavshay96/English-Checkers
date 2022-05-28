@@ -101,5 +101,11 @@
   <ItemGroup>
     <None Include="Resources\O-removebg-preview %281%29.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logic\Logic.csproj">
+      <Project>{a729c5b1-bb09-4ca8-8751-46e690694398}</Project>
+      <Name>Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
