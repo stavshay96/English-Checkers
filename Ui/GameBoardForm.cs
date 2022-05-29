@@ -15,11 +15,15 @@ namespace Ui
         private Button[,] m_ButtonsGameBoard;
         private Label m_LabelFirstPlayerScore;
         private Label m_LabelSecondPlayerScore;
+        private Label m_LabelWhichPlayerTurn;
+        private PictureBox m_PictureBoxWhichPlayerTurn;
         private Gameplay m_Gameplay;
         private Position m_CellMoveFrom;
         private Position m_CellMoveTo;
         private bool m_IsFirstClick = true;
         private bool m_IsFirstPlayerMove = true;
+        private bool m_IsEat = false;
+        private bool m_IsQuit = false;
 
         public GameBoardForm()
         {
@@ -44,8 +48,9 @@ namespace Ui
 
             m_ButtonsGameBoard = new Button[m_MenuForm.SizeOfBoard, m_MenuForm.SizeOfBoard];
             m_LabelFirstPlayerScore = new Label();
-            
             m_LabelSecondPlayerScore = new Label();
+            m_LabelWhichPlayerTurn = new Label();
+            m_PictureBoxWhichPlayerTurn = new PictureBox();
             
 
             for (int i = 0; i < m_MenuForm.SizeOfBoard; i++)
@@ -67,6 +72,8 @@ namespace Ui
                 }
             }
 
+            //this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.form_KeyPress);
+
             m_Gameplay = new Gameplay(m_MenuForm.TextBoxPlayer1Name, m_MenuForm.TextBoxPlayer2Name, (uint)m_MenuForm.SizeOfBoard, m_MenuForm.IsPlayingAgainstFriend);
 
             m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
@@ -74,15 +81,32 @@ namespace Ui
             this.m_LabelFirstPlayerScore.AutoSize = true;
             this.m_LabelFirstPlayerScore.BackColor = System.Drawing.Color.LightBlue;
             this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left, 21);
+
             m_LabelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
             this.m_LabelSecondPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelSecondPlayerScore.AutoSize = true;
             this.m_LabelSecondPlayerScore.BackColor = System.Drawing.Color.Orange;
             this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left, 21);
-            
+
+            //this.m_LabelWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
+            this.m_LabelWhichPlayerTurn.Text ="'s Turn!";
+            this.m_LabelWhichPlayerTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.m_LabelWhichPlayerTurn.AutoSize = true;
+            this.m_LabelWhichPlayerTurn.BackColor = System.Drawing.Color.White;
+            this.m_LabelWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard  - 1].Left + 22, 21);
+
+            this.m_PictureBoxWhichPlayerTurn.Height = this.m_LabelWhichPlayerTurn.Height+1;
+            this.m_PictureBoxWhichPlayerTurn.Width = this.m_LabelWhichPlayerTurn.Height;
+            this.m_PictureBoxWhichPlayerTurn.BackColor = System.Drawing.Color.White;
+            //this.m_PictureBoxWhichPlayerTurn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.m_PictureBoxWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 1].Left, 21);
+            this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
+            this.m_PictureBoxWhichPlayerTurn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 
             this.Controls.Add(this.m_LabelFirstPlayerScore);
             this.Controls.Add(this.m_LabelSecondPlayerScore);
+            this.Controls.Add(this.m_LabelWhichPlayerTurn);
+            this.Controls.Add(this.m_PictureBoxWhichPlayerTurn);
             this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard-1, m_MenuForm.SizeOfBoard-1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "English Checkers";
@@ -94,6 +118,21 @@ namespace Ui
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
         }
+
+        //private void form_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    char keyPressed = e.KeyChar;
+        //    if (keyPressed == 'Q' || keyPressed == 'q')
+        //    {
+        //        if(MessageBox.Show("You are going to quit. Are you sure?", "Quit Message", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
+        //        {
+        //            m_IsQuit = true;
+        //            MessageBox.Show("You Lost!!", "you quit", MessageBoxButtons.OK);
+        //            this.Close();
+        //        }
+
+        //    }
+        //}
 
         private void enableButtonAndDraw(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
         {
@@ -186,29 +225,62 @@ namespace Ui
                 }
                 else
                 {
-                    MessageBox.Show("You not own the cell !","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    MessageBox.Show("You not own the cell !","Error Pick",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
             }
             else
             {
-                if (m_Gameplay.IsOwnTheCell(clickedPosition, m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
+                // set the CellMoveTo with the currentPosition
+                m_CellMoveTo = clickedPosition;
+                if (m_CellMoveFrom.Row == m_CellMoveTo.Row && m_CellMoveFrom.Column == m_CellMoveTo.Column)
                 {
-                    foreach (Button button in this.m_ButtonsGameBoard)
-                    {
-                        if (button.Enabled)
-                        {
-                            button.BackColor = Color.White;
-                        }
-                    }
-
-                    // set the CellMoveTo with the currentPosition
+                    paintButtonsInWhite();
                     m_IsFirstClick = !m_IsFirstClick;
                 }
-
+                else
+                {
+                    //new method in gameplay that checks the positions
+                    if (m_Gameplay.IsLegalMove(ref m_CellMoveFrom, ref m_CellMoveTo, m_IsFirstPlayerMove, ref m_IsEat)) 
+                    {
+                        paintButtonsInWhite();
+                        // with isEat member we need to checks if eat or move 
+                        
+                        m_IsFirstClick = !m_IsFirstClick;
+                        m_IsFirstPlayerMove = !m_IsFirstPlayerMove;
+                        changePictureTurn();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Your move is illegal!", "Error Move", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
 
 
             
+        }
+
+        private void paintButtonsInWhite()
+        {
+            foreach (Button button in this.m_ButtonsGameBoard)
+            {
+                if (button.Enabled)
+                {
+                    button.BackColor = Color.White;
+                }
+            }
+        }
+
+        private void changePictureTurn()
+        {
+            if(m_IsFirstPlayerMove)
+            {
+                this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
+            }
+            else
+            {
+                this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.O_removebg_preview__1_;
+            }
         }
 
         private Position GetClickedPosition(Button i_ClickedButton)

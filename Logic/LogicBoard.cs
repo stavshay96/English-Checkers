@@ -91,7 +91,7 @@
             io_CellMoveTo.Row = (uint)(i_CurrentMove[4] - little_a);
         }
 
-        private bool CheckLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool o_isEat)
+        public bool CheckLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool o_isEat)
         {
             bool isLegalMove = false;
             o_isEat = false;

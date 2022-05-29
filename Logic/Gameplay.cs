@@ -277,5 +277,10 @@
             CellState.eCellState clickedCellState = m_LogicBoard.Board[i_ClickedPosition.Row, i_ClickedPosition.Column].cellState;
             return LogicBoard.IsControllingTheCell(clickedCellState, i_IsFirstPlayerMove);
         }
+
+        public bool IsLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool io_isEat)
+        {
+            return m_LogicBoard.CheckLegalMove(ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, ref io_isEat);
+        }
     }
 }
