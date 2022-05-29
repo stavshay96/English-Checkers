@@ -61,10 +61,12 @@ namespace Ui
             }
             else
             {
-               MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.Retry;
             }
         }
+
+      
 
         private bool arePlayersNamesNotEmpty()
         {
