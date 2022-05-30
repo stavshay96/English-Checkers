@@ -99,21 +99,21 @@
             return this.AmountOfSoldiers + (this.AmountOfKings * 4);
         }
 
-        public static void WhichPlayerPlayNow(bool i_FirstPlayerMove, Player i_FisrtPlayer, Player i_SecondPlayer)
-        {
-            string playerNameHisTurnNow;
+        //public static void WhichPlayerPlayNow(bool i_FirstPlayerMove, Player i_FisrtPlayer, Player i_SecondPlayer)
+        //{
+        //    string playerNameHisTurnNow;
 
-            if (i_FirstPlayerMove)
-            {
-                playerNameHisTurnNow = i_FisrtPlayer.PlayerName;
-            }
-            else
-            {
-                playerNameHisTurnNow = i_SecondPlayer.PlayerName;
-            }
+        //    if (i_FirstPlayerMove)
+        //    {
+        //        playerNameHisTurnNow = i_FisrtPlayer.PlayerName;
+        //    }
+        //    else
+        //    {
+        //        playerNameHisTurnNow = i_SecondPlayer.PlayerName;
+        //    }
 
-            //UI_Utils.PrintScoreMessage(i_FisrtPlayer.PlayerName, i_FisrtPlayer.CountWins, i_SecondPlayer.PlayerName, i_SecondPlayer.CountWins);
-            //UI_Utils.PrintMoveMessage(playerNameHisTurnNow, i_FirstPlayerMove);
-        }
+        //    //UI_Utils.PrintScoreMessage(i_FisrtPlayer.PlayerName, i_FisrtPlayer.CountWins, i_SecondPlayer.PlayerName, i_SecondPlayer.CountWins);
+        //    //UI_Utils.PrintMoveMessage(playerNameHisTurnNow, i_FirstPlayerMove);
+        //}
     }
 }

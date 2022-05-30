@@ -225,14 +225,17 @@
                 (i_ColumnCellFrom + (s_SecondPlayerAbiltyMove[1, 1] * i_Indication) == i_ColumnCellTo);
         }
 
-        public void MakeLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_isEat, out bool o_BecameAKing)
+        public void MakeLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_isEat, out bool o_BecameAKing, List <Cell> o_MovedCells)
         {
             bool isKingMoveNow = false;
+            o_MovedCells.Clear();
             if (i_isEat)
             {
                 Position eatenPosition = new Position();
                 eatenPosition.FindEatenPosition(io_CellMoveFrom, io_CellMoveTo);
                 m_Board[eatenPosition.Row, eatenPosition.Column].ChangeSourceCell();
+                o_MovedCells.Add(m_Board[eatenPosition.Row, eatenPosition.Column]);
+                //m_Board[eatenPosition.Row, eatenPosition.Column].cellState
             }
 
             if (m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].IsKing == true)
@@ -251,6 +254,9 @@
             {
                 o_BecameAKing = false;
             }
+
+            o_MovedCells.Add(m_Board[io_CellMoveTo.Row, io_CellMoveTo.Column]);
+            o_MovedCells.Add(m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column]);
         }
 
         private void MakeKing(ref Position io_CellMoveTo, out bool o_BecameAKing)

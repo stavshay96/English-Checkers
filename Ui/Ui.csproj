@@ -113,5 +113,11 @@
   <ItemGroup>
     <EmbeddedResource Include="checkersLogo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\goldCrown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redCrown.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
