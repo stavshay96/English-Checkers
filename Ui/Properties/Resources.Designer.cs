@@ -103,9 +103,29 @@ namespace Ui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap goldCrown {
+            get {
+                object obj = ResourceManager.GetObject("goldCrown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap O_removebg_preview__1_ {
             get {
                 object obj = ResourceManager.GetObject("O-removebg-preview (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redCrown {
+            get {
+                object obj = ResourceManager.GetObject("redCrown", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -195,30 +195,16 @@ namespace Ui
 
         private void buttonMButtonsGameBoard_Click(object sender, EventArgs e)
         {
+            bool isGameOver = false;
             Button clickedButton = sender as Button;
+
             // send to method and get the current position to the click button in  the matrix
             Position clickedPosition = GetClickedPosition(clickedButton);
             if (m_IsFirstClick)// boolean
             {
                 if (m_Gameplay.IsOwnTheCell(clickedPosition,m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
                 {
-                    if (clickedButton.BackColor == Color.White)
-                    {
-                        clickedButton.BackColor = Color.LightBlue;
-                    }
-                    else
-                    {
-                        clickedButton.BackColor = Color.White;
-                    }
-
-                    foreach (Button button in this.m_ButtonsGameBoard)
-                    {
-                        if (button.Enabled && button != clickedButton)
-                        {
-                            button.BackColor = Color.White;
-                        }
-                    }
-
+                    paintClickedButtonInColor(clickedButton);
                     // set the CellMoveFrom with the currentPosition
                     m_CellMoveFrom = clickedPosition;
                     m_IsFirstClick = !m_IsFirstClick;
@@ -244,7 +230,9 @@ namespace Ui
                     {
                         paintButtonsInWhite();
                         // with isEat member we need to checks if eat or move 
-                        
+                        isGameOver = m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
+                        // we will got back if the game is over
+                        changePictureOnButton(m_CellMoveFrom, m_CellMoveTo, m_IsEat);
                         m_IsFirstClick = !m_IsFirstClick;
                         m_IsFirstPlayerMove = !m_IsFirstPlayerMove;
                         changePictureTurn();
@@ -255,9 +243,50 @@ namespace Ui
                     }
                 }
             }
+            // check if the game over 
+            // if lost all solider 
+            if (isGameOver)
+            {
+                //messageBox for anther game.
+            }
+        }
 
+        private void changePictureOnButton(Position i_CellMoveFrom, Position i_CellMoveTo,bool i_IsEat)
+        {
+            if (i_IsEat)
+            {
+                Position middleCell = new Position();
+                middleCell.FindEatenPosition(i_CellMoveFrom, i_CellMoveTo);
+                this.m_ButtonsGameBoard[middleCell.Row, middleCell.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[0]);
+                this.m_ButtonsGameBoard[i_CellMoveFrom.Row, i_CellMoveFrom.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[2]);
+                this.m_ButtonsGameBoard[i_CellMoveTo.Row, i_CellMoveTo.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[1]);
+            }
+            else
+            {
+                this.m_ButtonsGameBoard[i_CellMoveTo.Row, i_CellMoveTo.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[0]);
+                this.m_ButtonsGameBoard[i_CellMoveFrom.Row, i_CellMoveFrom.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[1]);
 
-            
+            }
+        }
+
+        private void paintClickedButtonInColor(Button io_ClickedButton)
+        {
+            if (io_ClickedButton.BackColor == Color.White)
+            {
+                io_ClickedButton.BackColor = Color.LightBlue;
+            }
+            else
+            {
+                io_ClickedButton.BackColor = Color.White;
+            }
+
+            foreach (Button button in this.m_ButtonsGameBoard)
+            {
+                if (button.Enabled && button != io_ClickedButton)
+                {
+                    button.BackColor = Color.White;
+                }
+            }
         }
 
         private void paintButtonsInWhite()
@@ -301,6 +330,39 @@ namespace Ui
             clickedPosition.Row = (uint)(countPosition / m_MenuForm.SizeOfBoard);
             clickedPosition.Column = (uint)(countPosition % m_MenuForm.SizeOfBoard);
             return clickedPosition;
+        }
+
+        private static Image getSymbol(Cell i_currentCell)
+        {
+            Image symbol = null;
+            if (i_currentCell.IsActiveCell)
+            {
+                if (i_currentCell.cellState == CellState.eCellState.BelongToFirstPlayer)
+                {
+                    if (i_currentCell.IsKing)
+                    {
+                        symbol = global::Ui.Properties.Resources.redCrown;
+                    }
+                    else
+                    {
+                        symbol = global::Ui.Properties.Resources.x;
+                    }
+                }
+
+                if (i_currentCell.cellState == CellState.eCellState.BelongToSecondPlayer)
+                {
+                    if (i_currentCell.IsKing)
+                    {
+                        symbol = global::Ui.Properties.Resources.goldCrown;
+                    }
+                    else
+                    {
+                        symbol = global::Ui.Properties.Resources.O_removebg_preview__1_;
+                    }
+                }
+            }
+
+            return symbol;
         }
     }
 }
