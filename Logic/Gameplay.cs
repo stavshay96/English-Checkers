@@ -11,6 +11,8 @@
         private LogicBoard m_LogicBoard;
         private List<Cell> m_MovedCells;
 
+        public event Action<Position,Position,bool,bool,bool,Position> OnMove;
+
         public Gameplay(string i_FirstPlayerName, string i_SecondPlayerName, uint i_BoardSize, bool i_PlayingAgainstFriend)
         {
             m_FirstPlayer = new Player(i_FirstPlayerName, i_BoardSize);
@@ -43,26 +45,12 @@
             m_LogicBoard.InitBoard();
         }
 
-        public bool RunGame(Position i_CellMoveFrom, Position i_CellMoveTo,ref bool i_IsEat, bool i_IsFirstPlayerMove)
-        {
-            //bool isEat = false;
-            //bool isFirstPlayerMove = true;
-            //bool isQuit = false;
-            //Position cellMoveFrom = new Position();
-            //Position cellMoveTo = new Position();
-            //while(!isGameOver){
-            //VisualBoard.PrintBoard(ref m_LogicBoard);
-            //Player.WhichPlayerPlayNow(isFirstPlayerMove, m_FirstPlayer, m_SecondPlayer);
 
-            bool isGameOver = false;
+        public void RunGame(Position i_CellMoveFrom, Position i_CellMoveTo,ref bool i_IsEat, bool i_IsFirstPlayerMove)
+        {
+            bool isCanEatAgain = false;
             string expectedMove = null;
 
-            if (NoMoreMoves())
-            {
-                isGameOver = true;
-            }
-            else
-            {
                 if (m_IsSecondPlayerCPU && !i_IsFirstPlayerMove)
                 {
                     CpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
@@ -73,56 +61,28 @@
                     //m_LogicBoard.ReadMove(ref cellMoveFrom, ref cellMoveTo, isFirstPlayerMove, ref isEat, out isQuit, expectedMove);
                 }
 
-                //if (i_IsQuit)
-                //{
-                //    if (!i_IsFirstPlayerMove)
-                //    {
-                //        //UI_Utils.PrintQuitMessage(m_FirstPlayer.PlayerName, m_SecondPlayer.PlayerName);
-                //        m_FirstPlayer.WonTheGame();
-                //    }
-                //    else
-                //    {
-                //        //UI_Utils.PrintQuitMessage(m_SecondPlayer.PlayerName, m_FirstPlayer.PlayerName);
-                //        m_SecondPlayer.WonTheGame();
-                //    }
-
-                //    isGameOver = true;
-                //    //continue;
-                //}
-
-                if (m_LogicBoard.IsEatingAvailable(i_IsFirstPlayerMove))
+            bool IsEatingAvailable = m_LogicBoard.IsEatingAvailable(i_IsFirstPlayerMove);
+            if (IsEatingAvailable)
+            {
+                if (i_IsEat)
                 {
-                    if (i_IsEat)
-                    {
-                        MakeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
-
-                        if (IsGameOver())
-                        {
-                            isGameOver = true;
-                            //continue;
-                        }
-                    }
-                    else
-                    {
-                        //UI_Utils.PrintErrorMessage("move (that make eat)");
-
-                        //continue;
-                    }
-
-                    // check if he can eat again
-                    if (m_LogicBoard.IsCanEatAgain(ref i_CellMoveTo, out expectedMove))
-                    {
-                        //continue;
-                    }
+                    MakeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
                 }
                 else
                 {
-                    m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
-                    ChangeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
+                    // form , to ,isEatingAvilble ,isEat ,IsCanEatAgain,ExpectedMove
                 }
+
+                // check if he can eat again
+                isCanEatAgain = m_LogicBoard.IsCanEatAgain(ref i_CellMoveTo, out expectedMove);
             }
-            return isGameOver;
-            //}
+            else
+            {
+                m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
+                ChangeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
+
+            }
+            OnMove?.Invoke(i_CellMoveFrom, i_CellMoveTo, IsEatingAvailable,i_IsEat, isCanEatAgain,Position.ConvertStringToPosition(expectedMove));
         }
 
         private bool NoMoreMoves()
@@ -143,17 +103,15 @@
 
                 if (sumFirstPlayerSoldiers > sumSecondPlayerSoldiers)
                 {
-                    //UI_Utils.PrintWinningMessage(m_FirstPlayer.PlayerName);
                     m_FirstPlayer.WonTheGame();
                 }
                 else if (sumFirstPlayerSoldiers < sumSecondPlayerSoldiers)
                 {
-                    //UI_Utils.PrintWinningMessage(m_SecondPlayer.PlayerName);
                     m_SecondPlayer.WonTheGame();
                 }
                 else
                 {
-                   // UI_Utils.PrintTieMessage();
+                    /// Tie
                 }
             }
 
@@ -239,7 +197,7 @@
             }
         }
 
-        private bool IsGameOver()
+        public bool IsGameOver()
         {
             bool isGameOver = false;
 
@@ -273,9 +231,6 @@
 
         private void DeclareWinWhenPlayerLostHisSoldiers(ref bool io_IsEnemyLostAllSoldiers, Player i_WinnerPlayer)
         {
-           // VisualBoard.PrintBoard(ref m_LogicBoard);
-            System.Threading.Thread.Sleep(1000);
-           // UI_Utils.PrintWinningMessage(i_WinnerPlayer.PlayerName);
             i_WinnerPlayer.WonTheGame();
             io_IsEnemyLostAllSoldiers = true;
         }

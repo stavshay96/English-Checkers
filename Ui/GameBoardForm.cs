@@ -51,30 +51,32 @@ namespace Ui
             m_LabelSecondPlayerScore = new Label();
             m_LabelWhichPlayerTurn = new Label();
             m_PictureBoxWhichPlayerTurn = new PictureBox();
-            
+
 
             for (int i = 0; i < m_MenuForm.SizeOfBoard; i++)
             {
                 for (int j = 0; j < m_MenuForm.SizeOfBoard; j++)
                 {
-                    m_ButtonsGameBoard[i,j] = new Button();
+                    m_ButtonsGameBoard[i, j] = new Button();
                     m_ButtonsGameBoard[i, j].Size = new System.Drawing.Size(70, 70);
 
-                    enableButtonAndDraw(this.m_ButtonsGameBoard[i, j], i,j);
+                    enableButtonAndDraw(this.m_ButtonsGameBoard[i, j], i, j);
 
                     locateButtonOnForm(this.m_ButtonsGameBoard[i, j], i, j);
 
                     putSymbolOnButton(i, j);
 
-                    this.m_ButtonsGameBoard[i,j].Click += new System.EventHandler(this.buttonMButtonsGameBoard_Click);
+                    this.m_ButtonsGameBoard[i, j].Click += new System.EventHandler(this.buttonMButtonsGameBoard_Click);
 
                     this.Controls.Add(this.m_ButtonsGameBoard[i, j]);
                 }
             }
 
-            //this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.form_KeyPress);
+
 
             m_Gameplay = new Gameplay(m_MenuForm.TextBoxPlayer1Name, m_MenuForm.TextBoxPlayer2Name, (uint)m_MenuForm.SizeOfBoard, m_MenuForm.IsPlayingAgainstFriend);
+
+            m_Gameplay.OnMove += M_Gameplay_OnMove;
 
             m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
             this.m_LabelFirstPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
@@ -89,13 +91,13 @@ namespace Ui
             this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left, 21);
 
             //this.m_LabelWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
-            this.m_LabelWhichPlayerTurn.Text ="'s Turn!";
+            this.m_LabelWhichPlayerTurn.Text = "'s Turn!";
             this.m_LabelWhichPlayerTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelWhichPlayerTurn.AutoSize = true;
             this.m_LabelWhichPlayerTurn.BackColor = System.Drawing.Color.White;
-            this.m_LabelWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard  - 1].Left + 22, 21);
+            this.m_LabelWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 1].Left + 22, 21);
 
-            this.m_PictureBoxWhichPlayerTurn.Height = this.m_LabelWhichPlayerTurn.Height+1;
+            this.m_PictureBoxWhichPlayerTurn.Height = this.m_LabelWhichPlayerTurn.Height + 1;
             this.m_PictureBoxWhichPlayerTurn.Width = this.m_LabelWhichPlayerTurn.Height;
             this.m_PictureBoxWhichPlayerTurn.BackColor = System.Drawing.Color.White;
             //this.m_PictureBoxWhichPlayerTurn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -107,7 +109,7 @@ namespace Ui
             this.Controls.Add(this.m_LabelSecondPlayerScore);
             this.Controls.Add(this.m_LabelWhichPlayerTurn);
             this.Controls.Add(this.m_PictureBoxWhichPlayerTurn);
-            this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard-1, m_MenuForm.SizeOfBoard-1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
+            this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "English Checkers";
             this.BackgroundImage = global::Ui.Properties.Resources.checkersLogo;
@@ -118,21 +120,6 @@ namespace Ui
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
         }
-
-        //private void form_KeyPress(object sender, KeyPressEventArgs e)
-        //{
-        //    char keyPressed = e.KeyChar;
-        //    if (keyPressed == 'Q' || keyPressed == 'q')
-        //    {
-        //        if(MessageBox.Show("You are going to quit. Are you sure?", "Quit Message", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
-        //        {
-        //            m_IsQuit = true;
-        //            MessageBox.Show("You Lost!!", "you quit", MessageBoxButtons.OK);
-        //            this.Close();
-        //        }
-
-        //    }
-        //}
 
         private void enableButtonAndDraw(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
         {
@@ -205,9 +192,22 @@ namespace Ui
                 if (m_Gameplay.IsOwnTheCell(clickedPosition,m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
                 {
                     paintClickedButtonInColor(clickedButton);
-                    // set the CellMoveFrom with the currentPosition
-                    m_CellMoveFrom = clickedPosition;
-                    m_IsFirstClick = !m_IsFirstClick;
+                    if (m_CellMoveFrom.PositionInDefulteValue())
+                    {
+                        m_CellMoveFrom = clickedPosition;
+                        m_IsFirstClick = !m_IsFirstClick;
+                    }
+                    else
+                    {
+                        if (!m_CellMoveFrom.IsTheSamePositionValue(clickedPosition))
+                        {
+                            MessageBox.Show(" you can eat, choose the correct button !", "Error Pick", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            m_IsFirstClick = !m_IsFirstClick; 
+                        }
+                    }
                 }
                 else
                 {
@@ -218,7 +218,7 @@ namespace Ui
             {
                 // set the CellMoveTo with the currentPosition
                 m_CellMoveTo = clickedPosition;
-                if (m_CellMoveFrom.Row == m_CellMoveTo.Row && m_CellMoveFrom.Column == m_CellMoveTo.Column)
+                if (m_CellMoveFrom.IsTheSamePositionValue(m_CellMoveTo))
                 {
                     paintButtonsInWhite();
                     m_IsFirstClick = !m_IsFirstClick;
@@ -229,8 +229,9 @@ namespace Ui
                     if (m_Gameplay.IsLegalMove(ref m_CellMoveFrom, ref m_CellMoveTo, m_IsFirstPlayerMove, ref m_IsEat)) 
                     {
                         paintButtonsInWhite();
-                        // with isEat member we need to checks if eat or move 
-                        isGameOver = m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
+                        
+                        // we have more move 
+                        m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
                         // we will got back if the game is over
                         changePictureOnButton(m_CellMoveFrom, m_CellMoveTo, m_IsEat);
                         m_IsFirstClick = !m_IsFirstClick;
@@ -243,11 +244,37 @@ namespace Ui
                     }
                 }
             }
-            // check if the game over 
-            // if lost all solider 
+            isGameOver = m_Gameplay.IsGameOver();
+
             if (isGameOver)
             {
-                //messageBox for anther game.
+                // declare winner
+               // Check if want to play another game 
+               // all the logic for mew game.
+               //MessageBox.Show("Your move is illegal!", "Error Move", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void M_Gameplay_OnMove(Position From, Position To, bool i_IsEatingAvailable, bool IsEat, bool IsCanEatAgain, Position ExpectenMove)
+        {
+            if (i_IsEatingAvailable)
+            {
+                if (IsEat)
+                {
+                    changePictureOnButton(From, To, IsEat);
+                    if (IsCanEatAgain)
+                    {
+                        m_CellMoveFrom = ExpectenMove;
+                    }
+                }
+                else
+                {
+                    // messageBox iligale move need to do an eat Move
+                }
+            }
+            else
+            {
+                changePictureOnButton(From, To, IsEat);
             }
         }
 
