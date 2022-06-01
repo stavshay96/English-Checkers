@@ -235,7 +235,6 @@
                 eatenPosition.FindEatenPosition(io_CellMoveFrom, io_CellMoveTo);
                 m_Board[eatenPosition.Row, eatenPosition.Column].ChangeSourceCell();
                 o_MovedCells.Add(m_Board[eatenPosition.Row, eatenPosition.Column]);
-                //m_Board[eatenPosition.Row, eatenPosition.Column].cellState
             }
 
             if (m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].IsKing == true)
