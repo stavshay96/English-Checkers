@@ -169,11 +169,14 @@ namespace Ui
                     // X
                     this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.x;
                 }
-
-                if (m_MenuForm.SizeOfBoard / 2 < i_IndexRow && i_IndexRow < m_MenuForm.SizeOfBoard)
+                else if (m_MenuForm.SizeOfBoard / 2 < i_IndexRow && i_IndexRow < m_MenuForm.SizeOfBoard)
                 {
                     //O
                     this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.O_removebg_preview__1_;
+                }
+                else
+                {
+                    this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = null;
                 }
                 this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             }
@@ -187,6 +190,7 @@ namespace Ui
 
             // send to method and get the current position to the click button in  the matrix
             Position clickedPosition = GetClickedPosition(clickedButton);
+
             if (m_IsFirstClick)// boolean
             {
                 if (m_Gameplay.IsOwnTheCell(clickedPosition,m_IsFirstPlayerMove))// get the currnt position and and call to the is control the cell in logicBoard(isOwntheCell is in the gameplay class)
@@ -196,6 +200,7 @@ namespace Ui
                     {
                         m_CellMoveFrom = clickedPosition;
                         m_IsFirstClick = !m_IsFirstClick;
+
                     }
                     else
                     {
@@ -222,25 +227,21 @@ namespace Ui
                 {
                     paintButtonsInWhite();
                     m_IsFirstClick = !m_IsFirstClick;
+                    m_CellMoveFrom.ResetPosition();
+                    m_CellMoveTo.ResetPosition();
                 }
                 else
                 {
                     //new method in gameplay that checks the positions
                     if (m_Gameplay.IsLegalMove(ref m_CellMoveFrom, ref m_CellMoveTo, m_IsFirstPlayerMove, ref m_IsEat)) 
                     {
-                        paintButtonsInWhite();
-                        
                         // we have more move 
                         m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
-                        // we will got back if the game is over
-                        changePictureOnButton(m_CellMoveFrom, m_CellMoveTo, m_IsEat);
-                        m_IsFirstClick = !m_IsFirstClick;
-                        m_IsFirstPlayerMove = !m_IsFirstPlayerMove;
-                        changePictureTurn();
                     }
                     else
                     {
                         MessageBox.Show("Your move is illegal!", "Error Move", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                     }
                 }
             }
@@ -248,15 +249,41 @@ namespace Ui
 
             if (isGameOver)
             {
-                // declare winner
-               // Check if want to play another game 
-               // all the logic for mew game.
-               //MessageBox.Show("Your move is illegal!", "Error Move", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                declareOnWinner();
+                // winnig message 
+               DialogResult userAnswerAboutRestart = MessageBox.Show("Do you want to play another game?", "Restart Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (userAnswerAboutRestart == DialogResult.Yes)
+                {
+                    reinitGame();
+                }
+                else
+                {
+                    this.Close();
+                }
             }
+        }
+
+        private void reinitGame()
+        {
+            m_Gameplay.ReinitGame();
+            for (int i = 0; i < m_MenuForm.SizeOfBoard; i++)
+            {
+                for (int j = 0; j < m_MenuForm.SizeOfBoard; j++)
+                {
+                    putSymbolOnButton(i,j);
+                }
+            }
+            m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
+            m_LabelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
+            m_IsFirstClick = true;
+            m_IsFirstPlayerMove = true;
+            changePictureTurn();
         }
 
         private void M_Gameplay_OnMove(Position From, Position To, bool i_IsEatingAvailable, bool IsEat, bool IsCanEatAgain, Position ExpectenMove)
         {
+            m_IsEat = IsEat;
             if (i_IsEatingAvailable)
             {
                 if (IsEat)
@@ -265,16 +292,34 @@ namespace Ui
                     if (IsCanEatAgain)
                     {
                         m_CellMoveFrom = ExpectenMove;
+                        m_CellMoveTo.ResetPosition();
+                    }
+                    else
+                    {
+                        m_IsFirstClick = !m_IsFirstClick;
+                        m_IsFirstPlayerMove = !m_IsFirstPlayerMove;
+                        changePictureTurn();
+                        //m_IsEat = false;
+                        m_CellMoveFrom.ResetPosition();
+                        m_CellMoveTo.ResetPosition();
+                       
                     }
                 }
                 else
                 {
                     // messageBox iligale move need to do an eat Move
+                     MessageBox.Show("You must eat your enemy !","Error Pick",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }
             }
             else
             {
                 changePictureOnButton(From, To, IsEat);
+                m_IsFirstClick = !m_IsFirstClick;
+                m_IsFirstPlayerMove = !m_IsFirstPlayerMove;
+                m_CellMoveFrom.ResetPosition();
+                m_CellMoveTo.ResetPosition();
+
+                changePictureTurn();
             }
         }
 
@@ -294,6 +339,7 @@ namespace Ui
                 this.m_ButtonsGameBoard[i_CellMoveFrom.Row, i_CellMoveFrom.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[1]);
 
             }
+             paintButtonsInWhite();
         }
 
         private void paintClickedButtonInColor(Button io_ClickedButton)
@@ -390,6 +436,23 @@ namespace Ui
             }
 
             return symbol;
+        }
+
+        private void declareOnWinner()
+        {
+            int differenceResult = m_Gameplay.CalcDifferencesBetweenPlayersSoldiers()
+            if (differenceResult > 0)
+            {
+                // first player won
+            }
+            else if (differenceResult < 0)
+            {
+                // secound player won 
+            }
+            else
+            {
+                //tie
+            }
         }
     }
 }
