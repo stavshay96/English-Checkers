@@ -50,16 +50,15 @@
         {
             bool isCanEatAgain = false;
             string expectedMove = null;
-
-                if (m_IsSecondPlayerCPU && !i_IsFirstPlayerMove)
-                {
-                    CpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
-                    //System.Threading.Thread.Sleep(1300);
-                }
-                else
-                {
-                    //m_LogicBoard.ReadMove(ref cellMoveFrom, ref cellMoveTo, isFirstPlayerMove, ref isEat, out isQuit, expectedMove);
-                }
+            //need to fix this
+            if (m_IsSecondPlayerCPU && !i_IsFirstPlayerMove)
+            {
+                CpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
+            }
+            else
+            {
+                 this.m_LogicBoard.CheckLegalMove(ref i_CellMoveFrom,ref i_CellMoveTo,i_IsFirstPlayerMove,ref i_IsEat);
+            }
 
             bool IsEatingAvailable = m_LogicBoard.IsEatingAvailable(i_IsFirstPlayerMove);
             if (IsEatingAvailable)
@@ -68,11 +67,6 @@
                 {
                     MakeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
                 }
-                else
-                {
-                    // form , to ,isEatingAvilble ,isEat ,IsCanEatAgain,ExpectedMove
-                }
-
                 // check if he can eat again
                 isCanEatAgain = m_LogicBoard.IsCanEatAgain(ref i_CellMoveTo, out expectedMove);
             }
@@ -80,7 +74,6 @@
             {
                 m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
                 ChangeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
-
             }
             OnMove?.Invoke(i_CellMoveFrom, i_CellMoveTo, IsEatingAvailable,i_IsEat, isCanEatAgain,Position.ConvertStringToPosition(expectedMove));
         }
@@ -244,6 +237,11 @@
         public bool IsLegalMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool io_isEat)
         {
             return m_LogicBoard.CheckLegalMove(ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, ref io_isEat);
+        }
+
+        public int CalcDifferencesBetweenPlayersSoldiers()
+        {
+            return m_FirstPlayer.CalcSumOfSoldiers() - m_SecondPlayer.CalcSumOfSoldiers();
         }
     }
 }
