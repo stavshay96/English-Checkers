@@ -440,7 +440,7 @@ namespace Ui
 
         private void declareOnWinner()
         {
-            int differenceResult = m_Gameplay.CalcDifferencesBetweenPlayersSoldiers()
+            int differenceResult = m_Gameplay.CalcDifferencesBetweenPlayersSoldiers();
             if (differenceResult > 0)
             {
                 // first player won
