@@ -62,7 +62,9 @@ namespace Ui
             else
             {
                 MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //DialogResult userInsertEmptyName =
                 this.DialogResult = DialogResult.Retry;
+
             }
         }
 

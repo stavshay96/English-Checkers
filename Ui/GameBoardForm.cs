@@ -17,13 +17,15 @@ namespace Ui
         private Label m_LabelSecondPlayerScore;
         private Label m_LabelWhichPlayerTurn;
         private PictureBox m_PictureBoxWhichPlayerTurn;
+        private PictureBox m_PictureBoxFirstPlayer;
+        private PictureBox m_PictureBoxSecondPlayer;
         private Gameplay m_Gameplay;
         private Position m_CellMoveFrom;
         private Position m_CellMoveTo;
         private bool m_IsFirstClick = true;
         private bool m_IsFirstPlayerMove = true;
         private bool m_IsEat = false;
-        private bool m_IsQuit = false;
+        private Timer m_CPUTimer;
 
         public GameBoardForm()
         {
@@ -51,6 +53,9 @@ namespace Ui
             m_LabelSecondPlayerScore = new Label();
             m_LabelWhichPlayerTurn = new Label();
             m_PictureBoxWhichPlayerTurn = new PictureBox();
+            m_PictureBoxFirstPlayer = new PictureBox();
+            m_PictureBoxSecondPlayer = new PictureBox();
+            m_CPUTimer = new Timer();
 
 
             for (int i = 0; i < m_MenuForm.SizeOfBoard; i++)
@@ -77,18 +82,19 @@ namespace Ui
             m_Gameplay = new Gameplay(m_MenuForm.TextBoxPlayer1Name, m_MenuForm.TextBoxPlayer2Name, (uint)m_MenuForm.SizeOfBoard, m_MenuForm.IsPlayingAgainstFriend);
 
             m_Gameplay.OnMove += M_Gameplay_OnMove;
+            //m_CPUTimer.Tick += new EventHandler(this.CPUTimer_Tick);
 
             m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
             this.m_LabelFirstPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelFirstPlayerScore.AutoSize = true;
-            this.m_LabelFirstPlayerScore.BackColor = System.Drawing.Color.LightBlue;
-            this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left, 21);
+            this.m_LabelFirstPlayerScore.BackColor = System.Drawing.Color.White;
+            this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left + 22, 21);
 
             m_LabelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
             this.m_LabelSecondPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.m_LabelSecondPlayerScore.AutoSize = true;
-            this.m_LabelSecondPlayerScore.BackColor = System.Drawing.Color.Orange;
-            this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left, 21);
+            this.m_LabelSecondPlayerScore.BackColor = System.Drawing.Color.White;
+            this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left + 22, 21);
 
             //this.m_LabelWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
             this.m_LabelWhichPlayerTurn.Text = "'s Turn!";
@@ -105,10 +111,27 @@ namespace Ui
             this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
             this.m_PictureBoxWhichPlayerTurn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 
+            this.m_PictureBoxFirstPlayer.Height = this.m_LabelFirstPlayerScore.Height + 1;
+            this.m_PictureBoxFirstPlayer.Width = this.m_LabelFirstPlayerScore.Height;
+            this.m_PictureBoxFirstPlayer.BackColor = System.Drawing.Color.White;
+            this.m_PictureBoxFirstPlayer.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left, 21);
+            this.m_PictureBoxFirstPlayer.Image = global::Ui.Properties.Resources.x;
+            this.m_PictureBoxFirstPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+
+            this.m_PictureBoxSecondPlayer.Height = this.m_LabelSecondPlayerScore.Height + 1;
+            this.m_PictureBoxSecondPlayer.Width = this.m_LabelSecondPlayerScore.Height;
+            this.m_PictureBoxSecondPlayer.BackColor = System.Drawing.Color.White;
+            this.m_PictureBoxSecondPlayer.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left, 21);
+            this.m_PictureBoxSecondPlayer.Image = global::Ui.Properties.Resources.O_removebg_preview__1_;
+            this.m_PictureBoxSecondPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+
             this.Controls.Add(this.m_LabelFirstPlayerScore);
             this.Controls.Add(this.m_LabelSecondPlayerScore);
             this.Controls.Add(this.m_LabelWhichPlayerTurn);
             this.Controls.Add(this.m_PictureBoxWhichPlayerTurn);
+            this.Controls.Add(this.m_PictureBoxFirstPlayer);
+            this.Controls.Add(this.m_PictureBoxSecondPlayer);
+
             this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "English Checkers";
@@ -200,7 +223,6 @@ namespace Ui
                     {
                         m_CellMoveFrom = clickedPosition;
                         m_IsFirstClick = !m_IsFirstClick;
-
                     }
                     else
                     {
@@ -249,9 +271,10 @@ namespace Ui
 
             if (isGameOver)
             {
-                declareOnWinner();
+                declareOnWinner(out string winDeclaration);
                 // winnig message 
-               DialogResult userAnswerAboutRestart = MessageBox.Show("Do you want to play another game?", "Restart Game", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+               DialogResult userAnswerAboutRestart = MessageBox.Show(string.Format(@"{0}
+Do you want to play another round?", winDeclaration), "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (userAnswerAboutRestart == DialogResult.Yes)
                 {
@@ -321,7 +344,26 @@ namespace Ui
 
                 changePictureTurn();
             }
+            if (m_Gameplay.IsSecondPlayerIsCPU && !m_IsFirstPlayerMove)
+            {
+                // m_CPUTimer.Interval = 300;
+                //m_CPUTimer.Start();
+                //CPUTimer_Tick(m_CPUTimer, null);
+                //Task.Delay(1000).Wait();
+                m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
+                if (!IsCanEatAgain)
+                {
+                    m_IsFirstClick = !m_IsFirstClick;
+                }
+                
+            }
         }
+
+        //private void CPUTimer_Tick(object sender, EventArgs e)
+        //{
+        //    m_CPUTimer.Stop();
+        //    m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
+        //}
 
         private void changePictureOnButton(Position i_CellMoveFrom, Position i_CellMoveTo,bool i_IsEat)
         {
@@ -438,20 +480,23 @@ namespace Ui
             return symbol;
         }
 
-        private void declareOnWinner()
+        private void declareOnWinner(out string o_WinDeclaration)
         {
             int differenceResult = m_Gameplay.CalcDifferencesBetweenPlayersSoldiers();
             if (differenceResult > 0)
             {
-                // first player won
+                //MessageBox.Show(string.Format("{0} won this game!", m_MenuForm.TextBoxPlayer1Name), "We Have A Winner!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                o_WinDeclaration = string.Format("{0} won this game!", m_MenuForm.TextBoxPlayer1Name);
             }
             else if (differenceResult < 0)
             {
-                // secound player won 
+                //MessageBox.Show(string.Format("{0} won this game!", m_MenuForm.TextBoxPlayer2Name), "We Have A Winner!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                o_WinDeclaration = string.Format("{0} won this game!", m_MenuForm.TextBoxPlayer2Name);
             }
             else
             {
-                //tie
+                //MessageBox.Show("There is a tie!", "No Winner Here!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                o_WinDeclaration = "There is a tie!";
             }
         }
     }

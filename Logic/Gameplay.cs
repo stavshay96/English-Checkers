@@ -38,6 +38,11 @@
             set { m_MovedCells = value; }
         }
 
+        public bool IsSecondPlayerIsCPU
+        {
+            get { return m_IsSecondPlayerCPU; }
+        }
+
         public void ReinitGame()
         {
             m_FirstPlayer.InitAmountSoldiersAndKings(m_LogicBoard.SizeOfBoard);
@@ -241,7 +246,7 @@
 
         public int CalcDifferencesBetweenPlayersSoldiers()
         {
-            return m_FirstPlayer.CalcSumOfSoldiers() - m_SecondPlayer.CalcSumOfSoldiers();
+            return (int)(m_FirstPlayer.CalcSumOfSoldiers() - m_SecondPlayer.CalcSumOfSoldiers());
         }
     }
 }
