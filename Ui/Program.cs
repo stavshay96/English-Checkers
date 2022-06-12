@@ -14,7 +14,10 @@ namespace Ui
             Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             GameBoardForm gameBoardForm = new GameBoardForm();
-            gameBoardForm.ShowDialog();
+            if(gameBoardForm.MenuForm.DialogResult != DialogResult.Cancel)
+            {
+                gameBoardForm.ShowDialog();
+            }
             ////Application.Run(menuForm);
 
         }

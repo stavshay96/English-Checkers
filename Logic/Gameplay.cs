@@ -58,7 +58,7 @@
             //need to fix this
             if (m_IsSecondPlayerCPU && !i_IsFirstPlayerMove)
             {
-                CpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
+                cpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
             }
             else
             {
@@ -70,7 +70,7 @@
             {
                 if (i_IsEat)
                 {
-                    MakeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
+                    makeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
                 }
                 // check if he can eat again
                 isCanEatAgain = m_LogicBoard.IsCanEatAgain(ref i_CellMoveTo, out expectedMove);
@@ -78,12 +78,12 @@
             else
             {
                 m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
-                ChangeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
+                changeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
             }
             OnMove?.Invoke(i_CellMoveFrom, i_CellMoveTo, IsEatingAvailable,i_IsEat, isCanEatAgain,Position.ConvertStringToPosition(expectedMove));
         }
 
-        private bool NoMoreMoves()
+        private bool noMoreMoves()
         {
             bool noMoreMoves = true;
             bool isFirstPlayerMoveCheckDummy = true;
@@ -116,7 +116,7 @@
             return noMoreMoves;
         }
 
-        public void CpuTurn(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, ref bool io_IsEat, string i_ExpectedMove)
+        public void cpuTurn(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, ref bool io_IsEat, string i_ExpectedMove)
         {
             List<string> eatingOptions = new List<string>();
             List<string> movingOptions = new List<string>();
@@ -128,19 +128,19 @@
                 if (eatingOptions.Count != 0)
                 {
                     // we have a eating option
-                    ConvertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, eatingOptions);
+                    convertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, eatingOptions);
                     io_IsEat = true;
                 }
                 else if (movingOptions.Count != 0)
                 {
-                    ConvertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, movingOptions);
+                    convertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, movingOptions);
                     io_IsEat = false;
                 }
             }
             else
             {
                 m_LogicBoard.CpuEat(ref io_CellMoveFrom, eatingOptions, i_ExpectedMove);
-                ConvertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, eatingOptions);
+                convertTheSeletedString(ref io_CellMoveFrom, ref io_CellMoveTo, eatingOptions);
                 io_IsEat = true;
             }
 
@@ -148,7 +148,7 @@
             movingOptions.Clear();
         }
 
-        private static void ConvertTheSeletedString(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, List<string> i_SeletedList)
+        private static void convertTheSeletedString(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, List<string> i_SeletedList)
         {
             Random randIndex = new Random();
             int selectedIndex;
@@ -156,17 +156,17 @@
             LogicBoard.ConvertCurrentMoveToPositions(ref io_CellMoveFrom, ref io_CellMoveTo, i_SeletedList[selectedIndex]);
         }
 
-        private void MakeEatOperation(Position i_CellMoveFrom, Position i_CellMoveTo, bool i_IsEat, bool i_IsFirstPlayerMove)
+        private void makeEatOperation(Position i_CellMoveFrom, Position i_CellMoveTo, bool i_IsEat, bool i_IsFirstPlayerMove)
         {
             Position eatenPosition = new Position();
             eatenPosition.FindEatenPosition(i_CellMoveFrom, i_CellMoveTo);
-            ChangeSoldiersState(ref eatenPosition);
+            changeSoldiersState(ref eatenPosition);
             m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
 
-            ChangeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
+            changeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
         }
 
-        private void ChangeSoldiersState(ref Position i_EatenPosition)
+        private void changeSoldiersState(ref Position i_EatenPosition)
         {
             m_LogicBoard.CheckEatenPosition(ref i_EatenPosition, out bool isEatenAKing, out CellState.eCellState o_EatenPositionBelonging);
 
@@ -180,7 +180,7 @@
             }
         }
 
-        private void ChangeKingStateIfBecomeAKing(bool i_BecameAKing, bool i_IsFirstPlayerMove)
+        private void changeKingStateIfBecomeAKing(bool i_BecameAKing, bool i_IsFirstPlayerMove)
         {
             if (i_BecameAKing)
             {
@@ -199,11 +199,11 @@
         {
             bool isGameOver = false;
 
-            if (CheckIfEnemyLostAllSoldiers())
+            if (checkIfEnemyLostAllSoldiers())
             {
                 isGameOver = true;
             }
-            else if (NoMoreMoves())
+            else if (noMoreMoves())
             {
                 isGameOver = true;
             }
@@ -211,23 +211,23 @@
             return isGameOver;
         }
 
-        private bool CheckIfEnemyLostAllSoldiers()
+        private bool checkIfEnemyLostAllSoldiers()
         {
             bool isEnemyLostAllSoldiers = false;
 
             if (m_FirstPlayer.AmountOfSoldiers == 0 && m_FirstPlayer.AmountOfKings == 0)
             {
-                DeclareWinWhenPlayerLostHisSoldiers(ref isEnemyLostAllSoldiers, m_SecondPlayer);
+                declareWinWhenPlayerLostHisSoldiers(ref isEnemyLostAllSoldiers, m_SecondPlayer);
             }
             else if (m_SecondPlayer.AmountOfSoldiers == 0 && m_SecondPlayer.AmountOfKings == 0)
             {
-                DeclareWinWhenPlayerLostHisSoldiers(ref isEnemyLostAllSoldiers, m_FirstPlayer);
+                declareWinWhenPlayerLostHisSoldiers(ref isEnemyLostAllSoldiers, m_FirstPlayer);
             }
 
             return isEnemyLostAllSoldiers;
         }
 
-        private void DeclareWinWhenPlayerLostHisSoldiers(ref bool io_IsEnemyLostAllSoldiers, Player i_WinnerPlayer)
+        private void declareWinWhenPlayerLostHisSoldiers(ref bool io_IsEnemyLostAllSoldiers, Player i_WinnerPlayer)
         {
             i_WinnerPlayer.WonTheGame();
             io_IsEnemyLostAllSoldiers = true;

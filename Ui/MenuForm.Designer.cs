@@ -178,7 +178,7 @@
             this.buttonDoneConfiguration.TabIndex = 10;
             this.buttonDoneConfiguration.Text = "Done";
             this.buttonDoneConfiguration.UseVisualStyleBackColor = false;
-            this.buttonDoneConfiguration.Click += new System.EventHandler(this.buttonDoneConfiguration_Click);
+            //this.buttonDoneConfiguration.Click += new System.EventHandler(this.buttonDoneConfiguration_Click);
             // 
             // MenuForm
             // 
