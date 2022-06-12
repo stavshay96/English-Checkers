@@ -53,24 +53,24 @@ namespace Ui
             }
         }
 
-        private void buttonDoneConfiguration_Click(object sender, EventArgs e)
-        {
-            if(arePlayersNamesNotEmpty())
-            {
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //DialogResult userInsertEmptyName =
-                this.DialogResult = DialogResult.Retry;
+        //private void buttonDoneConfiguration_Click(object sender, EventArgs e)
+        //{
+        //    if(ArePlayersNamesNotEmpty())
+        //    {
+        //        this.Close();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        //DialogResult userInsertEmptyName =
+        //        this.DialogResult = DialogResult.Retry;
 
-            }
-        }
+        //    }
+        //}
 
       
 
-        private bool arePlayersNamesNotEmpty()
+        public bool ArePlayersNamesNotEmpty()
         {
             return !(string.IsNullOrWhiteSpace(textBoxPlayer1Name.Text) || string.IsNullOrWhiteSpace(textBoxPlayer2Name.Text));
         }

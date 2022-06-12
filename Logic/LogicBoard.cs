@@ -46,8 +46,8 @@
 
         public void InitBoard()
         {
-            CreateBaseBoard();
-            FillBaseBoard();
+            createBaseBoard();
+            fillBaseBoard();
         }
 
         //public void ReadMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool o_isEat, out bool o_Quit, string i_ExpectedMove)
@@ -101,7 +101,7 @@
             if (m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].IsActiveCell && m_Board[io_CellMoveTo.Row, io_CellMoveTo.Column].IsActiveCell
                 && IsControllingTheCell(m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].cellState, i_IsFirstPlayerMove))
             {
-                if (CheckValidDirection(IndicationForEating.eIndicationForEating.NotEating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
+                if (checkValidDirection(IndicationForEating.eIndicationForEating.NotEating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
                 {
                     // not eat
                     if (m_Board[io_CellMoveTo.Row, io_CellMoveTo.Column].cellState == CellState.eCellState.Empty)
@@ -110,11 +110,11 @@
                     }
 
                 }
-                else if (CheckValidDirection(IndicationForEating.eIndicationForEating.Eating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
+                else if (checkValidDirection(IndicationForEating.eIndicationForEating.Eating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
                 {
                     // eat
                     if (m_Board[io_CellMoveTo.Row, io_CellMoveTo.Column].cellState == CellState.eCellState.Empty
-                       && IsControlledByEnemy(ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
+                       && isControlledByEnemy(ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove))
                     {
                         isLegalMove = true;
                         o_isEat = true;
@@ -125,38 +125,38 @@
             return isLegalMove;
         }
 
-        private bool CheckValidDirection(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove)
+        private bool checkValidDirection(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove)
         {
             bool validDirection;
             if (m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].IsKing)
             {
-                CheckValidDirectionToKing(i_IndicationForEating, ref io_CellMoveFrom, ref io_CellMoveTo, out validDirection);
+                checkValidDirectionToKing(i_IndicationForEating, ref io_CellMoveFrom, ref io_CellMoveTo, out validDirection);
             }
             else
             {
-                CheckValidDirectionToSoldier(i_IndicationForEating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, out validDirection);
+                checkValidDirectionToSoldier(i_IndicationForEating, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, out validDirection);
             }
 
             return validDirection;
         }
 
-        private static void CheckValidDirectionToKing(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, out bool o_ValidDirection)
+        private static void checkValidDirectionToKing(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, out bool o_ValidDirection)
         {
             int indication = (int)i_IndicationForEating;
 
-            if (IsMoveLeftUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+            if (isMoveLeftUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
             {
                 o_ValidDirection = true;
             }
-            else if (IsMoveRightUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+            else if (isMoveRightUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
             {
                 o_ValidDirection = true;
             }
-            else if (IsMoveLeftDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+            else if (isMoveLeftDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
             {
                 o_ValidDirection = true;
             }
-            else if (IsMoveRightDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+            else if (isMoveRightDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
             {
                 o_ValidDirection = true;
             }
@@ -166,16 +166,16 @@
             }
         }
 
-        private static void CheckValidDirectionToSoldier(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, out bool o_ValidDirection)
+        private static void checkValidDirectionToSoldier(IndicationForEating.eIndicationForEating i_IndicationForEating, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, out bool o_ValidDirection)
         {
             int indication = (int)i_IndicationForEating;
             if (i_IsFirstPlayerMove)
             {
-                if (IsMoveLeftUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+                if (isMoveLeftUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
                 {
                     o_ValidDirection = true;
                 }
-                else if (IsMoveRightUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+                else if (isMoveRightUpOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
                 {
                     o_ValidDirection = true;
                 }
@@ -186,11 +186,11 @@
             }
             else
             {
-                if (IsMoveLeftDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+                if (isMoveLeftDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
                 {
                     o_ValidDirection = true;
                 }
-                else if (IsMoveRightDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
+                else if (isMoveRightDownOnTheBoard(io_CellMoveFrom.Row, io_CellMoveTo.Row, io_CellMoveFrom.Column, io_CellMoveTo.Column, indication))
                 {
                     o_ValidDirection = true;
                 }
@@ -201,25 +201,25 @@
             }
         }
 
-        private static bool IsMoveLeftUpOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
+        private static bool isMoveLeftUpOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
         {
             return (i_RowCellFrom + (s_FirstPlayerAbiltyMove[0, 0] * i_Indication) == i_RowCellTo) &&
                    (i_ColumnCellFrom + (s_FirstPlayerAbiltyMove[0, 1] * i_Indication) == i_ColumnCellTo);
         }
 
-        private static bool IsMoveRightUpOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
+        private static bool isMoveRightUpOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
         {
             return (i_RowCellFrom + (s_FirstPlayerAbiltyMove[1, 0] * i_Indication) == i_RowCellTo) &&
                              (i_ColumnCellFrom + (s_FirstPlayerAbiltyMove[1, 1] * i_Indication) == i_ColumnCellTo);
         }
 
-        private static bool IsMoveLeftDownOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
+        private static bool isMoveLeftDownOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
         {
             return (i_RowCellFrom + (s_SecondPlayerAbiltyMove[0, 0] * i_Indication) == i_RowCellTo) &&
                 (i_ColumnCellFrom + (s_SecondPlayerAbiltyMove[0, 1] * i_Indication) == i_ColumnCellTo);
         }
 
-        private static bool IsMoveRightDownOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
+        private static bool isMoveRightDownOnTheBoard(uint i_RowCellFrom, uint i_RowCellTo, uint i_ColumnCellFrom, uint i_ColumnCellTo, int i_Indication)
         {
             return (i_RowCellFrom + (s_SecondPlayerAbiltyMove[1, 0] * i_Indication) == i_RowCellTo) &&
                 (i_ColumnCellFrom + (s_SecondPlayerAbiltyMove[1, 1] * i_Indication) == i_ColumnCellTo);
@@ -247,7 +247,7 @@
 
             if (!isKingMoveNow)
             {
-                MakeKing(ref io_CellMoveTo, out o_BecameAKing);
+                makeKing(ref io_CellMoveTo, out o_BecameAKing);
             }
             else
             {
@@ -258,7 +258,7 @@
             o_MovedCells.Add(m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column]);
         }
 
-        private void MakeKing(ref Position io_CellMoveTo, out bool o_BecameAKing)
+        private void makeKing(ref Position io_CellMoveTo, out bool o_BecameAKing)
         {
             o_BecameAKing = false;
             if (m_Board[io_CellMoveTo.Row, io_CellMoveTo.Column].cellState == CellState.eCellState.BelongToFirstPlayer
@@ -294,7 +294,7 @@
             return isControlling;
         }
 
-        private bool IsControlledByEnemy(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove)
+        private bool isControlledByEnemy(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove)
         {
             //check if enemy conrtol the middle cell between form to.
             bool isControlled = false;
@@ -360,11 +360,11 @@
         {
             bool canMove = false;
             int currentRow = (int)i_CellToCheck.Row, currentColumn = (int)i_CellToCheck.Column;
-            if (IsLegalPosition(currentRow, currentColumn))
+            if (isLegalPosition(currentRow, currentColumn))
             {
                 if (m_Board[currentRow, currentColumn].IsKing)
                 {
-                    if (IsPlayerCanMove(currentRow, currentColumn, s_FirstPlayerAbiltyMove) || IsPlayerCanMove(currentRow, currentColumn, s_SecondPlayerAbiltyMove))
+                    if (isPlayerCanMove(currentRow, currentColumn, s_FirstPlayerAbiltyMove) || isPlayerCanMove(currentRow, currentColumn, s_SecondPlayerAbiltyMove))
                     {
                         canMove = true;
                     }
@@ -374,11 +374,11 @@
                     // have 2 check for eche player
                     if (m_Board[currentRow, currentColumn].cellState == CellState.eCellState.BelongToFirstPlayer)
                     {
-                        canMove = IsPlayerCanMove(currentRow, currentColumn, s_FirstPlayerAbiltyMove);
+                        canMove = isPlayerCanMove(currentRow, currentColumn, s_FirstPlayerAbiltyMove);
                     }
                     else if (m_Board[i_CellToCheck.Row, i_CellToCheck.Column].cellState == CellState.eCellState.BelongToSecondPlayer)
                     {
-                        canMove = IsPlayerCanMove(currentRow, currentColumn, s_SecondPlayerAbiltyMove);
+                        canMove = isPlayerCanMove(currentRow, currentColumn, s_SecondPlayerAbiltyMove);
                     }
                 }
             }
@@ -386,10 +386,10 @@
             return canMove;
         }
 
-        private bool CheckingPlayerOnHisMatrixMove(int i_CurrentRow, int i_CurrentColumn, int i_IndicationRowMatrix, int i_IndicationFirstColumnMatrix, int i_IndicationSecondColumnMatrix, int[,] i_ArrayPlayerAbiltyMove)
+        private bool checkingPlayerOnHisMatrixMove(int i_CurrentRow, int i_CurrentColumn, int i_IndicationRowMatrix, int i_IndicationFirstColumnMatrix, int i_IndicationSecondColumnMatrix, int[,] i_ArrayPlayerAbiltyMove)
         {
             bool isPlayerCanMove = false;
-            if (IsLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[i_IndicationRowMatrix, i_IndicationFirstColumnMatrix],
+            if (isLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[i_IndicationRowMatrix, i_IndicationFirstColumnMatrix],
                 i_CurrentColumn + i_ArrayPlayerAbiltyMove[i_IndicationRowMatrix, i_IndicationSecondColumnMatrix])
                && m_Board[i_CurrentRow + i_ArrayPlayerAbiltyMove[i_IndicationRowMatrix, i_IndicationFirstColumnMatrix],
                i_CurrentColumn + i_ArrayPlayerAbiltyMove[i_IndicationRowMatrix, i_IndicationSecondColumnMatrix]].cellState == CellState.eCellState.Empty)
@@ -400,11 +400,11 @@
             return isPlayerCanMove;
         }
 
-        private bool IsPlayerCanMove(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove)
+        private bool isPlayerCanMove(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove)
         {
             bool isPlayerCanMove = false;
-            if (CheckingPlayerOnHisMatrixMove(i_CurrentRow, i_CurrentColumn, 0, 0, 1, i_ArrayPlayerAbiltyMove)
-                || CheckingPlayerOnHisMatrixMove(i_CurrentRow, i_CurrentColumn, 1, 0, 1, i_ArrayPlayerAbiltyMove))
+            if (checkingPlayerOnHisMatrixMove(i_CurrentRow, i_CurrentColumn, 0, 0, 1, i_ArrayPlayerAbiltyMove)
+                || checkingPlayerOnHisMatrixMove(i_CurrentRow, i_CurrentColumn, 1, 0, 1, i_ArrayPlayerAbiltyMove))
             {
                 isPlayerCanMove = true;
             }
@@ -451,22 +451,22 @@
         {
             bool canEat = false;
             int currentRow = (int)i_CellToCheck.Row, currentColumn = (int)i_CellToCheck.Column;
-            if (IsLegalPosition(currentRow, currentColumn))
+            if (isLegalPosition(currentRow, currentColumn))
             {
                 if (m_Board[currentRow, currentColumn].IsKing)
                 {
                     if (m_Board[currentRow, currentColumn].cellState == CellState.eCellState.BelongToFirstPlayer)
                     {
-                        if (IsPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer)
-                            || IsPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer))
+                        if (isPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer)
+                            || isPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer))
                         {
                             canEat = true;
                         }
                     }
                     else
                     {
-                        if (IsPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer)
-                               || IsPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
+                        if (isPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer)
+                               || isPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
                         {
                             canEat = true;
                         }
@@ -477,11 +477,11 @@
                     // have 2 check for eche player
                     if (m_Board[currentRow, currentColumn].cellState == CellState.eCellState.BelongToFirstPlayer)
                     {
-                        canEat = IsPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer);
+                        canEat = isPlayerCanEat(currentRow, currentColumn, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToSecondPlayer);
                     }
                     else if (m_Board[i_CellToCheck.Row, i_CellToCheck.Column].cellState == CellState.eCellState.BelongToSecondPlayer)
                     {
-                        canEat = IsPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer);
+                        canEat = isPlayerCanEat(currentRow, currentColumn, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer);
                     }
                 }
             }
@@ -505,17 +505,17 @@
             return canEatAgain;
         }
 
-        private bool IsLegalPosition(int i_XPositio,int i_YPosition)
+        private bool isLegalPosition(int i_XPositio,int i_YPosition)
         {
             return i_XPositio >= 0 && i_XPositio < m_SizeOfBoard && i_YPosition >= 0 && i_YPosition < m_SizeOfBoard;
         }
 
-        private bool IsPlayerCanEat(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
+        private bool isPlayerCanEat(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
         {
             bool canEat = false;
 
             // can eat in left up direction
-            if (CanEatLeftDirection(i_CurrentRow, i_CurrentColumn, i_ArrayPlayerAbiltyMove, i_EnemyECellState))
+            if (canEatLeftDirection(i_CurrentRow, i_CurrentColumn, i_ArrayPlayerAbiltyMove, i_EnemyECellState))
             {
                 {
                     canEat = true;
@@ -523,7 +523,7 @@
             }
 
             // can eat in right up direction
-            if (CanEatRightDirection(i_CurrentRow, i_CurrentColumn, i_ArrayPlayerAbiltyMove, i_EnemyECellState))
+            if (canEatRightDirection(i_CurrentRow, i_CurrentColumn, i_ArrayPlayerAbiltyMove, i_EnemyECellState))
             {
                     canEat = true;
             }
@@ -531,19 +531,19 @@
             return canEat;
         }
 
-        private bool CanEatLeftDirection(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
+        private bool canEatLeftDirection(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
         {
-            return IsLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[0, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[0, 1])
+            return isLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[0, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[0, 1])
                  && m_Board[i_CurrentRow + i_ArrayPlayerAbiltyMove[0, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[0, 1]].cellState == i_EnemyECellState
-             && IsLegalPosition(i_CurrentRow + (i_ArrayPlayerAbiltyMove[0, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[0, 1] * 2))
+             && isLegalPosition(i_CurrentRow + (i_ArrayPlayerAbiltyMove[0, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[0, 1] * 2))
                 && m_Board[i_CurrentRow + (i_ArrayPlayerAbiltyMove[0, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[0, 1] * 2)].cellState == CellState.eCellState.Empty;
         }
 
-        private bool CanEatRightDirection(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
+        private bool canEatRightDirection(int i_CurrentRow, int i_CurrentColumn, int[,] i_ArrayPlayerAbiltyMove, CellState.eCellState i_EnemyECellState)
         {
-            return IsLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[1, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[1, 1])
+            return isLegalPosition(i_CurrentRow + i_ArrayPlayerAbiltyMove[1, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[1, 1])
                 && m_Board[i_CurrentRow + i_ArrayPlayerAbiltyMove[1, 0], i_CurrentColumn + i_ArrayPlayerAbiltyMove[1, 1]].cellState == i_EnemyECellState
-                && IsLegalPosition(i_CurrentRow + (i_ArrayPlayerAbiltyMove[1, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[1, 1] * 2))
+                && isLegalPosition(i_CurrentRow + (i_ArrayPlayerAbiltyMove[1, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[1, 1] * 2))
                     && m_Board[i_CurrentRow + (i_ArrayPlayerAbiltyMove[1, 0] * 2), i_CurrentColumn + (i_ArrayPlayerAbiltyMove[1, 1] * 2)].cellState == CellState.eCellState.Empty;
         }
 
@@ -551,7 +551,7 @@
         {
             if (i_ExpectedMove != null)
             {
-                IsLegalPosition(i_ExpectedMove[1] - 'a', i_ExpectedMove[0] - 'A');
+                isLegalPosition(i_ExpectedMove[1] - 'a', i_ExpectedMove[0] - 'A');
                 io_CellMoveFrom.Column = (uint)(i_ExpectedMove[0] - 'A');
                 io_CellMoveFrom.Row = (uint)(i_ExpectedMove[1] - 'a');
             }
@@ -562,64 +562,64 @@
 
                 // left eat
                 // leagl position and position empty
-                if (IsLegalPosition((int)io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[0,0]*2),(int)io_CellMoveFrom.Column+(s_FirstPlayerAbiltyMove[0,1]*2))
-                    && CanEatLeftDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_FirstPlayerAbiltyMove,CellState.eCellState.BelongToFirstPlayer))
+                if (isLegalPosition((int)io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[0,0]*2),(int)io_CellMoveFrom.Column+(s_FirstPlayerAbiltyMove[0,1]*2))
+                    && canEatLeftDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_FirstPlayerAbiltyMove,CellState.eCellState.BelongToFirstPlayer))
                 {
-                    io_EatingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom,(int)(io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[0, 0] * 2)),(int)(io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[0, 1] * 2)))); 
+                    io_EatingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom,(int)(io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[0, 0] * 2)),(int)(io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[0, 1] * 2)))); 
                 }
 
                 // right eat
-                if (IsLegalPosition((int)io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[1, 0] * 2), (int)io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[1, 1] * 2))
-                    && CanEatRightDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
+                if (isLegalPosition((int)io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[1, 0] * 2), (int)io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[1, 1] * 2))
+                    && canEatRightDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_FirstPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
                 {
-                    io_EatingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[1, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[1, 1] * 2))));
+                    io_EatingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_FirstPlayerAbiltyMove[1, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_FirstPlayerAbiltyMove[1, 1] * 2))));
                 }
             }
 
             // player eat down
             //left
-            if (IsLegalPosition((int)io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[0, 0] * 2), (int)io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[0, 1] * 2))
-                    && CanEatLeftDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
+            if (isLegalPosition((int)io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[0, 0] * 2), (int)io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[0, 1] * 2))
+                    && canEatLeftDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
             {
-                io_EatingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[0, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[0, 1] * 2))));
+                io_EatingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[0, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[0, 1] * 2))));
             }
 
             //right
-            if (IsLegalPosition((int)io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[1, 0] * 2), (int)io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[1, 1] * 2))
-                   && CanEatRightDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
+            if (isLegalPosition((int)io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[1, 0] * 2), (int)io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[1, 1] * 2))
+                   && canEatRightDirection((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, s_SecondPlayerAbiltyMove, CellState.eCellState.BelongToFirstPlayer))
             {
-                io_EatingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[1, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[1, 1] * 2))));
+                io_EatingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + (s_SecondPlayerAbiltyMove[1, 0] * 2)), (int)(io_CellMoveFrom.Column + (s_SecondPlayerAbiltyMove[1, 1] * 2))));
             }
         }
 
-        private void CpuMove(ref Position io_CellMoveFrom, List<string> io_MovingOptions)
+        private void cpuMove(ref Position io_CellMoveFrom, List<string> io_MovingOptions)
         {
             if (m_Board[io_CellMoveFrom.Row, io_CellMoveFrom.Column].IsKing)
             {
                 //left king
-                if(CheckingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 0, 0, 1, s_FirstPlayerAbiltyMove))
+                if(checkingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 0, 0, 1, s_FirstPlayerAbiltyMove))
                 {
-                    io_MovingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_FirstPlayerAbiltyMove[0, 0]), (int)(io_CellMoveFrom.Column + s_FirstPlayerAbiltyMove[0, 1])));
+                    io_MovingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_FirstPlayerAbiltyMove[0, 0]), (int)(io_CellMoveFrom.Column + s_FirstPlayerAbiltyMove[0, 1])));
                 }
 
                 //right king
-                if (CheckingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 1, 0, 1, s_FirstPlayerAbiltyMove))
+                if (checkingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 1, 0, 1, s_FirstPlayerAbiltyMove))
                 {
-                    io_MovingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_FirstPlayerAbiltyMove[1, 0]), (int)(io_CellMoveFrom.Column + s_FirstPlayerAbiltyMove[1, 1])));
+                    io_MovingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_FirstPlayerAbiltyMove[1, 0]), (int)(io_CellMoveFrom.Column + s_FirstPlayerAbiltyMove[1, 1])));
                 }
             }
 
             //player move down
             //left
-            if (CheckingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 0, 0, 1, s_SecondPlayerAbiltyMove))
+            if (checkingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 0, 0, 1, s_SecondPlayerAbiltyMove))
             {
-                io_MovingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_SecondPlayerAbiltyMove[0, 0]), (int)(io_CellMoveFrom.Column + s_SecondPlayerAbiltyMove[0, 1])));
+                io_MovingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_SecondPlayerAbiltyMove[0, 0]), (int)(io_CellMoveFrom.Column + s_SecondPlayerAbiltyMove[0, 1])));
             }
 
             //right
-            if (CheckingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 1, 0, 1, s_SecondPlayerAbiltyMove))
+            if (checkingPlayerOnHisMatrixMove((int)io_CellMoveFrom.Row, (int)io_CellMoveFrom.Column, 1, 0, 1, s_SecondPlayerAbiltyMove))
             {
-                io_MovingOptions.Add(CreateValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_SecondPlayerAbiltyMove[1, 0]), (int)(io_CellMoveFrom.Column + s_SecondPlayerAbiltyMove[1, 1])));
+                io_MovingOptions.Add(createValidStringForCpuPath(ref io_CellMoveFrom, (int)(io_CellMoveFrom.Row + s_SecondPlayerAbiltyMove[1, 0]), (int)(io_CellMoveFrom.Column + s_SecondPlayerAbiltyMove[1, 1])));
             }
         }
 
@@ -644,7 +644,7 @@
                             }
                             else if (IsCanMove(ref currPositionToCheck))
                             {
-                                CpuMove(ref currPositionToCheck, io_MovingOptions);
+                                cpuMove(ref currPositionToCheck, io_MovingOptions);
                             }
                         }
                     }
@@ -652,7 +652,7 @@
             }
         }
 
-        private static string CreateValidStringForCpuPath(ref Position i_CellMoveFrom, int i_CellMoveToRow, int i_CellMoveToCol)
+        private static string createValidStringForCpuPath(ref Position i_CellMoveFrom, int i_CellMoveToRow, int i_CellMoveToCol)
         {
             char moveSign = '>';
 
@@ -660,7 +660,7 @@
                                 + moveSign.ToString() + ((char)(i_CellMoveToCol + 'A')).ToString() + ((char)(i_CellMoveToRow + 'a')).ToString();
         }
 
-        private void CreateBaseBoard()
+        private void createBaseBoard()
         {
             for (int i = 0; i < m_SizeOfBoard; i++)
             {
@@ -671,7 +671,7 @@
             }
         }
 
-        private void FillBaseBoard()
+        private void fillBaseBoard()
         {
             for (int i = 0; i < m_SizeOfBoard; i++)
             {
