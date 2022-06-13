@@ -52,34 +52,12 @@ namespace Ui
                 return this.checkBoxIsPlayingAgainstFriend.Checked;
             }
         }
-
-        //private void buttonDoneConfiguration_Click(object sender, EventArgs e)
-        //{
-        //    if(ArePlayersNamesNotEmpty())
-        //    {
-        //        this.Close();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("You inserted empty name!", "Name Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        //DialogResult userInsertEmptyName =
-        //        this.DialogResult = DialogResult.Retry;
-
-        //    }
-        //}
-
       
 
         public bool ArePlayersNamesNotEmpty()
         {
             return !(string.IsNullOrWhiteSpace(textBoxPlayer1Name.Text) || string.IsNullOrWhiteSpace(textBoxPlayer2Name.Text));
         }
-
-        private void MenuForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
 
         private void textBoxPlayer1Name_TextChanged(object sender, EventArgs e)
         {
