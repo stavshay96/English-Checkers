@@ -50,38 +50,6 @@
             fillBaseBoard();
         }
 
-        //public void ReadMove(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, ref bool o_isEat, out bool o_Quit, string i_ExpectedMove)
-        //{
-        //    string currentMove;
-        //    bool isLegalMove;
-
-        //   // TheWholeTestOfTheInput(out currentMove, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, out isLegalMove, ref o_isEat, out o_Quit, i_ExpectedMove);
-        //    while (!isLegalMove)
-        //    {
-        //        //UI_Utils.PrintErrorMessage("legal move");
-        //        //TheWholeTestOfTheInput(out currentMove, ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, out isLegalMove, ref o_isEat, out o_Quit, i_ExpectedMove);
-        //    }
-        //}
-
-        //private void TheWholeTestOfTheInput(out string io_CurrentMove, ref Position io_CellMoveFrom, ref Position io_CellMoveTo, bool i_IsFirstPlayerMove, out bool o_IsLegalMove, ref bool o_isEat, out bool io_Quit, string i_ExpectedMove)
-        //{
-        //    io_CellMoveFrom.ResetPosition();
-        //    io_CellMoveTo.ResetPosition();
-
-
-        //    //UI_Utils.GetCurrentMove(out io_CurrentMove, m_SizeOfBoard, out io_Quit, i_ExpectedMove);
-        //    if (!io_Quit)
-        //    {
-        //        ConvertCurrentMoveToPositions(ref io_CellMoveFrom, ref io_CellMoveTo, io_CurrentMove);
-        //        o_IsLegalMove = this.CheckLegalMove(ref io_CellMoveFrom, ref io_CellMoveTo, i_IsFirstPlayerMove, ref o_isEat);
-        //    }
-        //    else
-        //    {
-        //        o_isEat = false;
-        //        o_IsLegalMove = true;
-        //    }
-        //}
-
         public static void ConvertCurrentMoveToPositions(ref Position io_CellMoveFrom, ref Position io_CellMoveTo, string i_CurrentMove)
         {
             char little_a = 'a', big_a = 'A';

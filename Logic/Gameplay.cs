@@ -55,7 +55,6 @@
         {
             bool isCanEatAgain = false;
             string expectedMove = null;
-            //need to fix this
             if (m_IsSecondPlayerCPU && !i_IsFirstPlayerMove)
             {
                 cpuTurn(ref i_CellMoveFrom, ref i_CellMoveTo, ref i_IsEat, expectedMove);
@@ -107,12 +106,8 @@
                 {
                     m_SecondPlayer.WonTheGame();
                 }
-                else
-                {
-                    /// Tie
-                }
+                //else Tie
             }
-
             return noMoreMoves;
         }
 
