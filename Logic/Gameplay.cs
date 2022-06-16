@@ -11,7 +11,7 @@
         private LogicBoard m_LogicBoard;
         private List<Cell> m_MovedCells;
 
-        public event Action<Position,Position,bool,bool,bool,Position> OnMove;
+        public event Action<Position, Position, bool, bool, bool, Position> OnMove;
 
         public Gameplay(string i_FirstPlayerName, string i_SecondPlayerName, uint i_BoardSize, bool i_PlayingAgainstFriend)
         {
@@ -24,23 +24,39 @@
 
         public uint FirstPlayerScore
         {
-            get { return m_FirstPlayer.CountWins; }
+            get
+            {
+                return m_FirstPlayer.CountWins;
+            }
         }
 
         public uint SecondPlayerScore
         {
-            get { return m_SecondPlayer.CountWins; }
+            get
+            {
+                return m_SecondPlayer.CountWins;
+            }
         }
 
         public List<Cell> MovedCells
         {
-            get { return m_MovedCells; }
-            set { m_MovedCells = value; }
+            get
+            {
+                return m_MovedCells;
+            }
+
+            set
+            {
+                m_MovedCells = value;
+            }
         }
 
         public bool IsSecondPlayerIsCPU
         {
-            get { return m_IsSecondPlayerCPU; }
+            get
+            {
+                return m_IsSecondPlayerCPU;
+            }
         }
 
         public void ReinitGame()
@@ -50,8 +66,7 @@
             m_LogicBoard.InitBoard();
         }
 
-
-        public void RunGame(Position i_CellMoveFrom, Position i_CellMoveTo,ref bool i_IsEat, bool i_IsFirstPlayerMove)
+        public void RunGame(Position i_CellMoveFrom, Position i_CellMoveTo, ref bool i_IsEat, bool i_IsFirstPlayerMove)
         {
             bool isCanEatAgain = false;
             string expectedMove = null;
@@ -61,7 +76,7 @@
             }
             else
             {
-                 this.m_LogicBoard.CheckLegalMove(ref i_CellMoveFrom,ref i_CellMoveTo,i_IsFirstPlayerMove,ref i_IsEat);
+                 this.m_LogicBoard.CheckLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsFirstPlayerMove, ref i_IsEat);
             }
 
             bool IsEatingAvailable = m_LogicBoard.IsEatingAvailable(i_IsFirstPlayerMove);
@@ -71,6 +86,7 @@
                 {
                     makeEatOperation(i_CellMoveFrom, i_CellMoveTo, i_IsEat, i_IsFirstPlayerMove);
                 }
+
                 // check if he can eat again
                 isCanEatAgain = m_LogicBoard.IsCanEatAgain(ref i_CellMoveTo, out expectedMove);
             }
@@ -79,7 +95,8 @@
                 m_LogicBoard.MakeLegalMove(ref i_CellMoveFrom, ref i_CellMoveTo, i_IsEat, out bool becameAKing, m_MovedCells);
                 changeKingStateIfBecomeAKing(becameAKing, i_IsFirstPlayerMove);
             }
-            OnMove?.Invoke(i_CellMoveFrom, i_CellMoveTo, IsEatingAvailable,i_IsEat, isCanEatAgain,Position.ConvertStringToPosition(expectedMove));
+
+            OnMove?.Invoke(i_CellMoveFrom, i_CellMoveTo, IsEatingAvailable, i_IsEat, isCanEatAgain, Position.ConvertStringToPosition(expectedMove));
         }
 
         private bool noMoreMoves()
@@ -108,6 +125,7 @@
                 }
                 //else Tie
             }
+
             return noMoreMoves;
         }
 

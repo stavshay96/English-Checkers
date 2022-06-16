@@ -65,6 +65,7 @@ namespace Logic
                 expectedPosition.Column = (uint)(i_ExpectedMove[0] - big_a);
                 expectedPosition.Row = (uint)(i_ExpectedMove[1] - little_a);
             }
+
             return expectedPosition;
         }
     }
