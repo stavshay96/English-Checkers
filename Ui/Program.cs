@@ -12,7 +12,7 @@ namespace Ui
         {
             Application.EnableVisualStyles();
             GameBoardForm gameBoardForm = new GameBoardForm();
-            if(gameBoardForm.MenuForm.DialogResult != DialogResult.Cancel)
+            if (gameBoardForm.MenuForm.DialogResult != DialogResult.Cancel)
             {
                 gameBoardForm.ShowDialog();
             }

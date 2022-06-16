@@ -13,9 +13,9 @@ namespace Ui
     {
         private MenuForm m_MenuForm;
         private Button[,] m_ButtonsGameBoard;
-        private Label m_LabelFirstPlayerScore;
-        private Label m_LabelSecondPlayerScore;
-        private Label m_LabelWhichPlayerTurn;
+        private Label labelFirstPlayerScore;
+        private Label labelSecondPlayerScore;
+        private Label labelWhichPlayerTurn;
         private PictureBox m_PictureBoxWhichPlayerTurn;
         private PictureBox m_PictureBoxFirstPlayer;
         private PictureBox m_PictureBoxSecondPlayer;
@@ -46,9 +46,9 @@ namespace Ui
                 sizeOfBoard = m_MenuForm.SizeOfBoard / 2;
 
                 m_ButtonsGameBoard = new Button[m_MenuForm.SizeOfBoard, m_MenuForm.SizeOfBoard];
-                m_LabelFirstPlayerScore = new Label();
-                m_LabelSecondPlayerScore = new Label();
-                m_LabelWhichPlayerTurn = new Label();
+                labelFirstPlayerScore = new Label();
+                labelSecondPlayerScore = new Label();
+                labelWhichPlayerTurn = new Label();
                 m_PictureBoxWhichPlayerTurn = new PictureBox();
                 m_PictureBoxFirstPlayer = new PictureBox();
                 m_PictureBoxSecondPlayer = new PictureBox();
@@ -75,55 +75,46 @@ namespace Ui
 
                 m_Gameplay = new Gameplay(m_MenuForm.TextBoxPlayer1Name, m_MenuForm.TextBoxPlayer2Name, (uint)m_MenuForm.SizeOfBoard, m_MenuForm.IsPlayingAgainstFriend);
                 m_Gameplay.OnMove += M_Gameplay_OnMove;
+                labelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
+                this.labelFirstPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+                this.labelFirstPlayerScore.AutoSize = true;
+                this.labelFirstPlayerScore.BackColor = System.Drawing.Color.White;
+                this.labelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left + 22, 21);
+                labelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
+                this.labelSecondPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+                this.labelSecondPlayerScore.AutoSize = true;
+                this.labelSecondPlayerScore.BackColor = System.Drawing.Color.White;
+                this.labelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left + 17, 21);
+                this.labelWhichPlayerTurn.Text = "'s Turn!";
+                this.labelWhichPlayerTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+                this.labelWhichPlayerTurn.AutoSize = true;
+                this.labelWhichPlayerTurn.BackColor = System.Drawing.Color.White;
+                this.labelWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 1].Left + 22, 21);
 
-                m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
-                this.m_LabelFirstPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-                this.m_LabelFirstPlayerScore.AutoSize = true;
-                this.m_LabelFirstPlayerScore.BackColor = System.Drawing.Color.White;
-                this.m_LabelFirstPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left + 22, 21);
-
-                m_LabelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
-                this.m_LabelSecondPlayerScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-                this.m_LabelSecondPlayerScore.AutoSize = true;
-                this.m_LabelSecondPlayerScore.BackColor = System.Drawing.Color.White;
-                this.m_LabelSecondPlayerScore.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left + 17, 21);
-
-                //this.m_LabelWhichPlayerTurn.Image = global::Ui.Properties.Resources.x;
-                this.m_LabelWhichPlayerTurn.Text = "'s Turn!";
-                this.m_LabelWhichPlayerTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-                this.m_LabelWhichPlayerTurn.AutoSize = true;
-                this.m_LabelWhichPlayerTurn.BackColor = System.Drawing.Color.White;
-                this.m_LabelWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 1].Left + 22, 21);
-
-                this.m_PictureBoxWhichPlayerTurn.Height = this.m_LabelWhichPlayerTurn.Height + 1;
-                this.m_PictureBoxWhichPlayerTurn.Width = this.m_LabelWhichPlayerTurn.Height;
+                this.m_PictureBoxWhichPlayerTurn.Height = this.labelWhichPlayerTurn.Height + 1;
+                this.m_PictureBoxWhichPlayerTurn.Width = this.labelWhichPlayerTurn.Height;
                 this.m_PictureBoxWhichPlayerTurn.BackColor = System.Drawing.Color.White;
-                //this.m_PictureBoxWhichPlayerTurn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
                 this.m_PictureBoxWhichPlayerTurn.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 1].Left, 21);
                 this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.O_removebg_preview__1_;
                 this.m_PictureBoxWhichPlayerTurn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-
-                this.m_PictureBoxFirstPlayer.Height = this.m_LabelFirstPlayerScore.Height + 1;
-                this.m_PictureBoxFirstPlayer.Width = this.m_LabelFirstPlayerScore.Height;
+                this.m_PictureBoxFirstPlayer.Height = this.labelFirstPlayerScore.Height + 1;
+                this.m_PictureBoxFirstPlayer.Width = this.labelFirstPlayerScore.Height;
                 this.m_PictureBoxFirstPlayer.BackColor = System.Drawing.Color.White;
                 this.m_PictureBoxFirstPlayer.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard - 3].Left, 21);
                 this.m_PictureBoxFirstPlayer.Image = global::Ui.Properties.Resources.O_removebg_preview__1_;
                 this.m_PictureBoxFirstPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-
-                this.m_PictureBoxSecondPlayer.Height = this.m_LabelSecondPlayerScore.Height + 1;
-                this.m_PictureBoxSecondPlayer.Width = this.m_LabelSecondPlayerScore.Height;
+                this.m_PictureBoxSecondPlayer.Height = this.labelSecondPlayerScore.Height + 1;
+                this.m_PictureBoxSecondPlayer.Width = this.labelSecondPlayerScore.Height;
                 this.m_PictureBoxSecondPlayer.BackColor = System.Drawing.Color.White;
                 this.m_PictureBoxSecondPlayer.Location = new System.Drawing.Point(this.m_ButtonsGameBoard[0, sizeOfBoard + 2].Left-5, 21);
                 this.m_PictureBoxSecondPlayer.Image = global::Ui.Properties.Resources.x;
                 this.m_PictureBoxSecondPlayer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-
-                this.Controls.Add(this.m_LabelFirstPlayerScore);
-                this.Controls.Add(this.m_LabelSecondPlayerScore);
-                this.Controls.Add(this.m_LabelWhichPlayerTurn);
+                this.Controls.Add(this.labelFirstPlayerScore);
+                this.Controls.Add(this.labelSecondPlayerScore);
+                this.Controls.Add(this.labelWhichPlayerTurn);
                 this.Controls.Add(this.m_PictureBoxWhichPlayerTurn);
                 this.Controls.Add(this.m_PictureBoxFirstPlayer);
                 this.Controls.Add(this.m_PictureBoxSecondPlayer);
-
                 this.ClientSize = new System.Drawing.Size(m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Right + 20, m_ButtonsGameBoard[m_MenuForm.SizeOfBoard - 1, m_MenuForm.SizeOfBoard - 1].Bottom + 20);
                 this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
                 this.Text = "English Checkers";
@@ -131,7 +122,6 @@ namespace Ui
                 this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Tile;
                 this.MaximizeBox = false;
                 this.FormBorderStyle = FormBorderStyle.Fixed3D;
-
                 System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuForm));
                 this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             }
@@ -154,13 +144,15 @@ namespace Ui
                     }
                 }
             }
-
             return m_GotPlayersNames;
         }
 
         public Form MenuForm
         {
-            get { return m_MenuForm; }
+            get
+            {
+                return m_MenuForm;
+            }
         }
 
         private void enableButtonAndDraw(Button i_CurrentButton, int i_IndexRow, int i_IndexColoum)
@@ -204,7 +196,7 @@ namespace Ui
         {
             if ((i_IndexRow + i_IndexColoum) % 2 != 0)
             {
-                if (i_IndexRow < m_MenuForm.SizeOfBoard / 2 - 1)
+                if (i_IndexRow < (m_MenuForm.SizeOfBoard / 2) - 1)
                 {
                     //O
                     this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.O_removebg_preview__1_;
@@ -213,12 +205,12 @@ namespace Ui
                 {
                     //X
                     this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = global::Ui.Properties.Resources.x;
-
                 }
                 else
                 {
                     this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImage = null;
                 }
+
                 this.m_ButtonsGameBoard[i_IndexRow, i_IndexColoum].BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             }
         }
@@ -235,8 +227,9 @@ namespace Ui
             }
             else
             {
-                secondClickOperation(clickedPosition);      
+                secondClickOperation(clickedPosition);
             }
+
             isGameOver = m_Gameplay.IsGameOver();
 
             if (isGameOver)
@@ -289,7 +282,7 @@ namespace Ui
                 //new method in gameplay that checks the positions
                 if (m_Gameplay.IsLegalMove(ref m_CellMoveFrom, ref m_CellMoveTo, m_IsFirstPlayerMove, ref m_IsEat))
                 {
-                    // we have more move 
+                    // we have more move
                     m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
                 }
                 else
@@ -306,11 +299,12 @@ namespace Ui
             {
                 for (int j = 0; j < m_MenuForm.SizeOfBoard; j++)
                 {
-                    putSymbolOnButton(i,j);
+                    putSymbolOnButton(i, j);
                 }
             }
-            m_LabelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
-            m_LabelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
+
+            labelFirstPlayerScore.Text = m_MenuForm.TextBoxPlayer1Name + ": " + m_Gameplay.FirstPlayerScore;
+            labelSecondPlayerScore.Text = m_MenuForm.TextBoxPlayer2Name + ": " + m_Gameplay.SecondPlayerScore;
             m_IsFirstClick = true;
             m_IsFirstPlayerMove = true;
             changePictureTurn();
@@ -345,6 +339,7 @@ namespace Ui
                 changePictureOnButton(From, To, IsEat);
                 doWhenTurnIsChanged();
             }
+
             if (m_Gameplay.IsSecondPlayerIsCPU && !m_IsFirstPlayerMove)
             {
                 m_Gameplay.RunGame(m_CellMoveFrom, m_CellMoveTo, ref m_IsEat, m_IsFirstPlayerMove);
@@ -364,7 +359,7 @@ namespace Ui
             m_CellMoveTo.ResetPosition();
         }
 
-        private void changePictureOnButton(Position i_CellMoveFrom, Position i_CellMoveTo,bool i_IsEat)
+        private void changePictureOnButton(Position i_CellMoveFrom, Position i_CellMoveTo, bool i_IsEat)
         {
             if (i_IsEat)
             {
@@ -379,7 +374,8 @@ namespace Ui
                 this.m_ButtonsGameBoard[i_CellMoveTo.Row, i_CellMoveTo.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[0]);
                 this.m_ButtonsGameBoard[i_CellMoveFrom.Row, i_CellMoveFrom.Column].BackgroundImage = getSymbol(m_Gameplay.MovedCells[1]);
             }
-             paintButtonsInWhite();
+
+            paintButtonsInWhite();
         }
 
         private void paintClickedButtonInColor(Button io_ClickedButton)
@@ -415,7 +411,7 @@ namespace Ui
 
         private void changePictureTurn()
         {
-            if(m_IsFirstPlayerMove)
+            if (m_IsFirstPlayerMove)
             {
                 this.m_PictureBoxWhichPlayerTurn.Image = global::Ui.Properties.Resources.O_removebg_preview__1_;
             }
@@ -428,9 +424,9 @@ namespace Ui
         private Position getClickedPosition(Button i_ClickedButton)
         {
             uint countPosition = 0;
-            foreach(Button button in this.m_ButtonsGameBoard)
+            foreach (Button button in this.m_ButtonsGameBoard)
             {
-                if(button == i_ClickedButton)
+                if (button == i_ClickedButton)
                 {
                     break;
                 }
@@ -439,6 +435,7 @@ namespace Ui
                     countPosition++;
                 }
             }
+
             Position clickedPosition = new Position();
             clickedPosition.Row = (uint)(countPosition / m_MenuForm.SizeOfBoard);
             clickedPosition.Column = (uint)(countPosition % m_MenuForm.SizeOfBoard);
@@ -474,6 +471,7 @@ namespace Ui
                     }
                 }
             }
+
             return symbol;
         }
 
